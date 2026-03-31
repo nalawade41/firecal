@@ -1,13 +1,18 @@
 import { useState } from "react"
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router"
 import type { FireInputs, FireResults } from "@/types"
+import type { TaxHarvestInputs, TaxHarvestResults } from "@/types/tax-harvest"
 import { calculateFire } from "@/engine"
 import { defaultInputs } from "@/engine/defaults"
 import { InputForm } from "@/components/input-form"
 import { ResultsSummary } from "@/components/results-summary"
 import { ResultsTable } from "@/components/results-table"
-import { Flame } from "lucide-react"
+import { TaxHarvestInputForm } from "@/components/tax-harvest-input-form"
+import { TaxHarvestResultsView } from "@/components/tax-harvest-results"
+import { calculateTaxHarvest } from "@/engine/tax-harvest/calculator"
+import { Flame, Leaf } from "lucide-react"
 
-function App() {
+function FireCalculator() {
   const [results, setResults] = useState<FireResults | null>(null)
 
   function handleCalculate(inputs: FireInputs) {
@@ -16,34 +21,98 @@ function App() {
   }
 
   return (
+    <div className="space-y-8">
+      <InputForm initialInputs={defaultInputs} onCalculate={handleCalculate} />
+
+      {results && (
+        <div className="space-y-8">
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-border/50" />
+            <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+              Results
+            </span>
+            <div className="h-px flex-1 bg-border/50" />
+          </div>
+
+          <ResultsSummary summary={results.summary} />
+          <ResultsTable yearByYear={results.yearByYear} goalCategories={results.summary.goalCategories} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function TaxHarvestTool() {
+  const [results, setResults] = useState<TaxHarvestResults | null>(null)
+
+  function handleCalculate(inputs: TaxHarvestInputs) {
+    const harvestResults = calculateTaxHarvest(inputs)
+    setResults(harvestResults)
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center gap-3">
+        <div className="h-px flex-1 bg-border/50" />
+        <span className="text-sm font-medium text-emerald-700 uppercase tracking-wider">
+          LTCG Tax Harvesting Tool
+        </span>
+        <div className="h-px flex-1 bg-border/50" />
+      </div>
+
+      <TaxHarvestInputForm onCalculate={handleCalculate} />
+
+      {results && <TaxHarvestResultsView results={results} />}
+    </div>
+  )
+}
+
+function AppContent() {
+  const location = useLocation()
+  const isTaxHarvest = location.pathname === "/tax-harvest"
+
+  return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-white/60 bg-white/60 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
-          <Flame className="h-7 w-7 text-orange-500" />
-          <h1 className="text-xl font-bold tracking-tight">FireCal</h1>
-          <span className="text-sm text-muted-foreground ml-1">FIRE Planning Calculator</span>
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Flame className="h-7 w-7 text-orange-500" />
+            <h1 className="text-xl font-bold tracking-tight">FireCal</h1>
+            <span className="text-sm text-muted-foreground ml-1">FIRE Planning & Tax Tools</span>
+          </div>
+          <nav className="flex gap-2">
+            <Link
+              to="/"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                !isTaxHarvest
+                  ? "bg-orange-100 text-orange-700"
+                  : "text-muted-foreground hover:bg-slate-100"
+              }`}
+            >
+              FIRE Calculator
+            </Link>
+            <Link
+              to="/tax-harvest"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isTaxHarvest
+                  ? "bg-emerald-100 text-emerald-700"
+                  : "text-muted-foreground hover:bg-slate-100"
+              }`}
+            >
+              <Leaf className="h-4 w-4 inline mr-1" />
+              Tax Harvest
+            </Link>
+          </nav>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-        <InputForm initialInputs={defaultInputs} onCalculate={handleCalculate} />
-
-        {results && (
-          <div className="space-y-8">
-            <div className="flex items-center gap-3">
-              <div className="h-px flex-1 bg-border/50" />
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                Results
-              </span>
-              <div className="h-px flex-1 bg-border/50" />
-            </div>
-
-            <ResultsSummary summary={results.summary} />
-            <ResultsTable yearByYear={results.yearByYear} goalCategories={results.summary.goalCategories} />
-          </div>
-        )}
+        <Routes>
+          <Route path="/" element={<FireCalculator />} />
+          <Route path="/tax-harvest" element={<TaxHarvestTool />} />
+        </Routes>
       </main>
 
       {/* Footer */}
@@ -53,6 +122,14 @@ function App() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   )
 }
 
