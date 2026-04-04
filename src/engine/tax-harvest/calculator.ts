@@ -1,19 +1,26 @@
 /**
  * Tax Harvest Calculator
  * 
- * Main entry point for calculating tax harvest recommendations
+ * Main entry point for calculating tax harvest recommendations.
+ * File parsers have been moved to separate AMC-specific files in the parsers/ directory.
  */
 
 import type { 
   TaxHarvestInputs, 
   TaxHarvestResults, 
   Lot,
-  Transaction 
+  Transaction,
+  AMC 
 } from "@/types/tax-harvest"
 import { 
   processTransactionsFIFO, 
   calculateHarvestPlan,
 } from "./fifo-engine"
+import {
+  parseAxisAMCFile,
+  parseSBICSV,
+  parseGenericCSV,
+} from "./parsers"
 
 /**
  * Calculate complete tax harvest results
@@ -114,185 +121,21 @@ export function getCurrentFinancialYear(): { start: Date; end: Date } {
 }
 
 /**
- * Parse Generic CSV format: Date, Type, Units, NAV, Amount, [Fund Name]
+ * Parse an uploaded file based on AMC type
+ * Delegates to the appropriate AMC-specific parser
  */
-export function parseGenericCSV(csvText: string): Transaction[] {
-  const lines = csvText.trim().split("\n")
-  const transactions: Transaction[] = []
-  
-  if (lines.length === 0) return transactions
-  
-  // Skip header row
-  const startIndex = lines[0].toLowerCase().includes("date") ? 1 : 0
-  
-  for (let i = startIndex; i < lines.length; i++) {
-    const line = lines[i].trim()
-    if (!line) continue
-    
-    const parts = line.split(",")
-    if (parts.length < 5) continue
-    
-    try {
-      const dateStr = parts[0].trim()
-      const typeStr = parts[1].trim().toLowerCase()
-      const units = parseFloat(parts[2])
-      const nav = parseFloat(parts[3])
-      const amount = parseFloat(parts[4])
-      const fundName = parts[5]?.trim()
-      
-      if (!dateStr || isNaN(nav) || isNaN(amount) || isNaN(units)) continue
-      
-      const date = parseCSVDate(dateStr)
-      if (!date) continue
-      
-      const type = mapTransactionType(typeStr)
-      if (!type) continue
-      
-      transactions.push({
-        id: `tx-${i}`,
-        date,
-        type,
-        units: Math.round(units * 10000) / 10000,
-        navPerUnit: nav,
-        amount,
-        fundName,
-      })
-    } catch {
-      continue
-    }
-  }
-  
-  return transactions
-}
-
-/**
- * Parse SBI Mutual Fund CSV format: FolioNo, Date (MM/DD/YYYY), SchemeName, Type, NAV, Amount
- */
-export function parseSBICSV(csvText: string): Transaction[] {
-  const lines = csvText.trim().split("\n")
-  const transactions: Transaction[] = []
-  
-  if (lines.length === 0) return transactions
-  
-  // Skip header row
-  const startIndex = 1
-  
-  for (let i = startIndex; i < lines.length; i++) {
-    const line = lines[i].trim()
-    if (!line) continue
-    
-    const parts = line.split(",")
-    if (parts.length < 6) continue
-    
-    try {
-      // SBI Format: FolioNo, Date, SchemeName, Type, NAV, Amount
-      // indices:      0        1     2          3     4    5
-      const dateStr = parts[1].trim()
-      const fundName = parts[2].trim()
-      const typeStr = parts[3].trim().toLowerCase()
-      const nav = parseFloat(parts[4])
-      const amount = parseFloat(parts[5])
-      
-      if (!dateStr || isNaN(nav) || isNaN(amount)) continue
-      
-      // Parse MM/DD/YYYY format (SBI format)
-      const date = parseSBIDate(dateStr)
-      if (!date) continue
-      
-      // Calculate units since not provided in SBI format
-      const units = nav > 0 ? amount / nav : 0
-      
-      const type = mapTransactionType(typeStr)
-      if (!type) continue
-      
-      transactions.push({
-        id: `tx-${i}`,
-        date,
-        type,
-        units: Math.round(units * 10000) / 10000,
-        navPerUnit: nav,
-        amount,
-        fundName,
-      })
-    } catch {
-      continue
-    }
-  }
-  
-  return transactions
-}
-
-/**
- * Route to appropriate CSV parser based on AMC
- */
-export function parseCSVTransactions(csvText: string, amc: string = "generic"): Transaction[] {
+export async function parseAMCFile(file: File, amc: AMC): Promise<Transaction[]> {
   switch (amc) {
-    case "sbi":
+    case "axis":
+      return parseAxisAMCFile(file)
+    case "sbi": {
+      const csvText = await file.text()
       return parseSBICSV(csvText)
-    case "generic":
-    default:
-      return parseGenericCSV(csvText)
-  }
-}
-
-/**
- * Parse date from generic CSV (handles DD/MM/YYYY or YYYY-MM-DD)
- */
-function parseCSVDate(dateStr: string): Date | null {
-  if (dateStr.includes("/")) {
-    const parts = dateStr.split("/").map(Number)
-    if (parts[0] > 12) {
-      // DD/MM/YYYY format
-      return new Date(parts[2], parts[1] - 1, parts[0])
-    } else {
-      // MM/DD/YYYY format
-      return new Date(parts[2], parts[0] - 1, parts[1])
     }
-  }
-  const date = new Date(dateStr)
-  return isNaN(date.getTime()) ? null : date
-}
-
-/**
- * Parse date from SBI format (MM/DD/YYYY)
- */
-function parseSBIDate(dateStr: string): Date | null {
-  if (!dateStr.includes("/")) {
-    const date = new Date(dateStr)
-    return isNaN(date.getTime()) ? null : date
-  }
-  
-  const parts = dateStr.split("/").map(Number)
-  // SBI format is MM/DD/YYYY
-  const date = new Date(parts[2], parts[0] - 1, parts[1])
-  return isNaN(date.getTime()) ? null : date
-}
-
-/**
- * Map transaction type strings to Transaction type
- */
-function mapTransactionType(typeStr: string): Transaction["type"] | null {
-  switch (typeStr) {
-    case "buy":
-    case "purchase":
-      return "buy"
-    case "sip":
-      return "sip"
-    case "sell":
-    case "redemption":
-      return "sell"
-    case "switch-in":
-    case "switch in":
-      return "switch-in"
-    case "switch-out":
-    case "switch out":
-      return "switch-out"
-    case "bonus":
-      return "bonus"
-    case "dividend-reinvest":
-    case "dividend reinvest":
-      return "dividend-reinvest"
-    default:
-      return null
+    case "generic":
+    default: {
+      const csvText = await file.text()
+      return parseGenericCSV(csvText)
+    }
   }
 }

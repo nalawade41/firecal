@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WealthTrack — v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Core palette */
+  --pine:   #1A3A28;
+  --forest: #2D5A40;
+  --sage:   #4A8060;
+  --mint:   #7BB89A;
+  --foam:   #C8E6D4;
+  --mist:   #EEF7F2;
+
+  /* Glass tokens */
+  --glass-bg:      rgba(255,255,255,0.62);
+  --glass-bg-dark: rgba(255,255,255,0.42);
+  --glass-border:  rgba(255,255,255,0.75);
+  --glass-shadow:  0 8px 32px rgba(26,58,40,0.12), 0 2px 8px rgba(26,58,40,0.08);
+  --glass-blur:    blur(18px) saturate(160%);
+
+  /* Surface */
+  --bg-page:   #0F2A1C;
+  --ink:       #1A2E20;
+  --ink2:      #4A6654;
+  --ink3:      #8AA896;
+  --surface:   #FFFFFF;
+  --surface2:  rgba(238,247,242,0.7);
+
+  /* Semantic */
+  --green:  #1D6B3E;
+  --green-l:#D4EDDE;
+  --amber:  #8B5E0A;
+  --amber-l:#FEF3DC;
+  --red:    #8B2020;
+  --red-l:  #FCEAEA;
+  --blue:   #1A4A8A;
+  --blue-l: #E0EDFB;
+
+  --r:   12px;
+  --r-sm: 8px;
+  --r-lg: 18px;
+}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg-page);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.55;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── BACKGROUND MESH ── */
+.bg-mesh{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(74,128,96,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 90%, rgba(45,90,64,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 60% 40%, rgba(123,184,154,0.15) 0%, transparent 55%),
+    linear-gradient(160deg, #0F2A1C 0%, #162F22 40%, #0C1F15 100%);
+}
+/* floating orbs */
+.orb{
+  position:fixed;border-radius:50%;filter:blur(60px);
+  animation:drift 18s ease-in-out infinite alternate;
+  z-index:0;pointer-events:none;
+}
+.orb1{width:420px;height:420px;background:rgba(74,128,96,0.25);top:-80px;left:-100px;animation-duration:22s}
+.orb2{width:320px;height:320px;background:rgba(29,107,62,0.2);bottom:-60px;right:-80px;animation-duration:16s;animation-delay:-8s}
+.orb3{width:200px;height:200px;background:rgba(123,184,154,0.18);top:40%;left:60%;animation-duration:20s;animation-delay:-4s}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,30px) scale(1.08)}}
+
+/* ── GLASS CARD ── */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:var(--r-lg);
+  box-shadow:var(--glass-shadow);
+}
+.glass-dark{
+  background:var(--glass-bg-dark);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:var(--r-lg);
+  box-shadow:var(--glass-shadow);
+}
+/* Tinted glass for hero panels */
+.glass-pine{
+  background:rgba(26,58,40,0.55);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(123,184,154,0.25);
+  border-radius:var(--r-lg);
+  box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  color:#fff;
+}
+
+/* ── SCREENS ── */
+.screen{display:none;position:relative;z-index:1}
+.screen.active{display:block}
+
+/* ── LAYOUT ── */
+.page{min-height:100vh;position:relative;z-index:1}
+.container{max-width:1080px;margin:0 auto;padding:0 24px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:rgba(15,42,28,0.7);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(123,184,154,0.2);
+  padding:0 28px;height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:500;
+  color:#fff;letter-spacing:-.01em;
+}
+.logo span{color:var(--mint)}
+.topnav{display:flex;gap:2px}
+.topnav a{
+  padding:6px 14px;border-radius:var(--r-sm);
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,0.6);
+  cursor:pointer;transition:all .15s;
+  text-decoration:none;
+}
+.topnav a:hover{background:rgba(255,255,255,.1);color:#fff}
+.topnav a.active{background:rgba(123,184,154,0.2);color:var(--mint)}
+.topnav a.accent{
+  background:rgba(29,107,62,0.5);color:#fff;
+  border:1px solid rgba(123,184,154,0.4);
+}
+.topnav a.accent:hover{background:rgba(29,107,62,0.7)}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(123,184,154,0.25);
+  border:1.5px solid rgba(123,184,154,0.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;color:var(--mint);
+}
+.nav-status{font-size:11px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80}
+
+/* ── TYPOGRAPHY ── */
+.label{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+.label-light{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+h1{font-size:22px;font-weight:500;color:var(--ink)}
+h2{font-size:17px;font-weight:500;color:var(--ink)}
+h3{font-size:14px;font-weight:500;color:var(--ink)}
+.serif{font-family:'Cormorant Garamond',serif}
+.muted{color:var(--ink2)}
+.hint{color:var(--ink3);font-size:12px}
+.mono{font-family:'DM Mono',monospace}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-green{background:var(--green-l);color:var(--green)}
+.badge-amber{background:var(--amber-l);color:var(--amber)}
+.badge-red{background:var(--red-l);color:var(--red)}
+.badge-glass{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.badge-gray{background:rgba(74,102,84,.1);color:var(--ink2);border:1px solid rgba(74,102,84,.15)}
+
+/* ── PROGRESS ── */
+.progress-track{height:5px;background:rgba(0,0,0,.08);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.pf-green{background:linear-gradient(90deg,#2D8A50,#4ade80)}
+.pf-amber{background:linear-gradient(90deg,#C87820,#FBBF24)}
+.pf-red{background:linear-gradient(90deg,#C02020,#F87171)}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .18s;border:1px solid transparent;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#2D8A50,#1D6B3E);
+  color:#fff;border-color:rgba(255,255,255,.15);
+  box-shadow:0 2px 8px rgba(29,107,62,.3);
+}
+.btn-primary:hover{background:linear-gradient(135deg,#349458,#237A46);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,107,62,.4)}
+.btn-glass{
+  background:rgba(255,255,255,.65);
+  color:var(--ink);border-color:rgba(255,255,255,.8);
+  backdrop-filter:blur(8px);
+}
+.btn-glass:hover{background:rgba(255,255,255,.85)}
+.btn-outline-light{
+  background:rgba(255,255,255,.1);color:#fff;
+  border:1px solid rgba(255,255,255,.3);
+}
+.btn-outline-light:hover{background:rgba(255,255,255,.18)}
+.btn-ghost{background:transparent;color:var(--ink2);border-color:transparent;padding:6px 10px}
+.btn-ghost:hover{background:rgba(0,0,0,.05);color:var(--ink)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-lg{padding:13px 26px;font-size:15px;border-radius:var(--r)}
+
+/* ── FORM INPUTS ── */
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+.form-label{font-size:12px;font-weight:500;color:var(--ink2)}
+.form-input{
+  width:100%;padding:10px 14px;
+  border:1px solid rgba(74,102,84,.2);
+  border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(8px);
+  outline:none;transition:all .15s;
+  appearance:none;
+}
+.form-input:focus{
+  border-color:var(--sage);
+  background:rgba(255,255,255,.95);
+  box-shadow:0 0 0 3px rgba(74,128,96,.15);
+}
+.form-hint{font-size:11px;color:var(--ink3)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.input-auto{background:rgba(200,230,212,.35)!important;color:var(--green)!important;font-weight:500}
+select.form-input{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238AA896' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:rgba(74,102,84,.12);margin:16px 0}
+
+/* ── CHIPS ── */
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  padding:5px 14px;border-radius:20px;
+  border:1px solid rgba(74,102,84,.2);
+  font-size:12px;font-weight:500;
+  cursor:pointer;transition:all .15s;
+  color:var(--ink2);background:rgba(255,255,255,.6);
+  backdrop-filter:blur(4px);
+}
+.chip.active{background:var(--forest);border-color:var(--forest);color:#fff}
+.chip:hover:not(.active){background:rgba(255,255,255,.85);color:var(--ink)}
+
+/* ── SEGMENT ── */
+.segment{display:flex;background:rgba(0,0,0,.06);border-radius:var(--r-sm);padding:3px}
+.seg-btn{
+  flex:1;padding:7px 10px;border:none;background:none;
+  border-radius:6px;font-size:12px;font-weight:500;
+  color:var(--ink2);cursor:pointer;transition:all .15s;white-space:nowrap;
+  font-family:'DM Sans',sans-serif;
+}
+.seg-btn.active{
+  background:rgba(255,255,255,.85);color:var(--ink);
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+
+/* ── INNER TABS ── */
+.inner-tabs{display:flex;border-bottom:1px solid rgba(74,102,84,.15);margin-bottom:20px}
+.inner-tab{padding:9px 16px;font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.inner-tab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* ── ALERT ── */
+.alert{padding:12px 16px;border-radius:var(--r-sm);border-left:3px solid;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;font-size:13px;backdrop-filter:blur(8px)}
+.alert-amber{background:rgba(254,243,220,.8);border-color:#D4860A;color:var(--amber)}
+.alert-green{background:rgba(212,237,222,.8);border-color:var(--green);color:var(--green)}
+.alert-blue{background:rgba(224,237,251,.8);border-color:#2060B0;color:var(--blue)}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:9px 14px;border-bottom:1px solid rgba(74,102,84,.15)}
+td{padding:12px 14px;border-bottom:1px solid rgba(74,102,84,.08);font-size:13px;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(74,128,96,.04)}
+
+/* ── STEP WIZARD ── */
+.steps{display:flex;align-items:center;margin-bottom:28px}
+.step{display:flex;align-items:center;gap:8px}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+.sc-done{background:var(--green);color:#fff}
+.sc-active{background:var(--green);color:#fff;box-shadow:0 0 0 5px rgba(29,107,62,.2)}
+.sc-pending{background:rgba(255,255,255,.5);color:var(--ink3);border:1px solid rgba(74,102,84,.2)}
+.step-label{font-size:12px;font-weight:500;color:var(--ink2)}
+.step-label.active{color:var(--ink)}
+.step-line{flex:1;height:1px;background:rgba(74,102,84,.15);margin:0 10px}
+.step-line.done{background:var(--green)}
+
+/* ── GOAL TYPE GRID ── */
+.goal-type-card{
+  border:1px solid rgba(74,102,84,.2);
+  border-radius:var(--r);padding:16px;
+  cursor:pointer;transition:all .18s;text-align:center;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:blur(8px);
+  position:relative;
+}
+.goal-type-card:hover{
+  border-color:var(--sage);
+  background:rgba(255,255,255,.75);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(26,58,40,.1);
+}
+.goal-type-card.selected{
+  border-color:var(--green);border-width:2px;
+  background:rgba(212,237,222,.7);
+}
+.gtc-check{
+  position:absolute;top:8px;right:8px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--green);color:#fff;
+  display:none;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;
+}
+.goal-type-card.selected .gtc-check{display:flex}
+
+/* ── ONBOARDING SPECIFIC ── */
+.ob-page{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:32px 20px;position:relative;z-index:1;
+}
+.ob-card{width:100%;max-width:580px;padding:36px}
+.ob-progress{height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin-bottom:32px;overflow:hidden}
+.ob-progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--sage));border-radius:2px;transition:width .4s ease}
+.ob-step-label{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px;letter-spacing:.04em;font-weight:500;text-transform:uppercase}
+.ob-question{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff;line-height:1.3;margin-bottom:6px}
+.ob-sub{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:28px;line-height:1.6}
+.ob-input{
+  width:100%;padding:12px 16px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  color:#fff;background:rgba(255,255,255,.1);
+  backdrop-filter:blur(12px);outline:none;transition:all .2s;
+}
+.ob-input::placeholder{color:rgba(255,255,255,.35)}
+.ob-input:focus{border-color:rgba(123,184,154,.6);background:rgba(255,255,255,.15);box-shadow:0 0 0 3px rgba(123,184,154,.15)}
+.ob-select{
+  width:100%;padding:12px 16px;
+  border:1px solid rgba(255,255,255,.2);border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif;font-size:14px;color:#fff;
+  background:rgba(255,255,255,.1);backdrop-filter:blur(12px);
+  outline:none;transition:all .2s;appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
+.ob-select:focus{border-color:rgba(123,184,154,.6);box-shadow:0 0 0 3px rgba(123,184,154,.15)}
+.ob-select option{background:#1A3A28;color:#fff}
+.ob-choice{
+  padding:13px 16px;border:1px solid rgba(255,255,255,.15);
+  border-radius:var(--r-sm);cursor:pointer;transition:all .18s;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);
+  font-size:13px;font-weight:500;
+}
+.ob-choice:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+.ob-choice.selected{background:rgba(123,184,154,.2);border-color:rgba(123,184,154,.5);color:#fff}
+.ob-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ob-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ob-label{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:5px;font-weight:500}
+.ob-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.fund-entry{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r-sm);padding:14px 16px;margin-bottom:10px;
+}
+.remove-btn{
+  width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:none;
+  cursor:pointer;color:rgba(255,255,255,.5);font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:.15s;
+}
+.remove-btn:hover{background:rgba(248,113,113,.2);color:#F87171}
+
+/* ── GOAL CARD ── */
+.goal-card{
+  padding:18px;cursor:pointer;transition:all .2s;
+  border-top:3px solid transparent;
+}
+.goal-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(26,58,40,.18)}
+
+/* ── FIRE PANEL ── */
+.fire-panel{padding:24px;color:#fff;position:relative;overflow:hidden}
+.fire-panel::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 20%, rgba(123,184,154,.15), transparent 60%);
+  pointer-events:none;
+}
+
+/* ── DONUT ── */
+.donut-legend{display:flex;flex-direction:column;gap:9px;flex:1}
+.legend-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── METRIC BOX ── */
+.metric-box{background:rgba(238,247,242,.65);border-radius:var(--r-sm);padding:13px 15px;border:1px solid rgba(74,102,84,.12)}
+.metric-box.yellow{background:rgba(254,243,220,.7);border-color:rgba(212,160,0,.25)}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* ── INVEST ROW ── */
+.invest-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(74,102,84,.1)}
+.invest-row:last-child{border-bottom:none}
+
+/* ── NAV CONFIRM CHIP ── */
+.nav-confirm{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  background:rgba(74,128,96,.15);
+  border:1px solid rgba(74,128,96,.25);
+  font-size:11px;color:var(--sage);font-weight:500;
+}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- ══════════════════════════════════════════
+     TOPBAR
+══════════════════════════════════════════ -->
+<div class="topbar" id="topbar" style="display:none">
+  <span class="logo" style="font-size:20px">Wealth<span>Track</span></span>
+  <nav class="topnav" id="topnav">
+    <a onclick="go('dashboard')" id="nav-dashboard">Dashboard</a>
+    <a onclick="go('goals')" id="nav-goals">Goals</a>
+    <a onclick="go('transactions')" id="nav-transactions">Transactions</a>
+    <a onclick="go('harvest')" id="nav-harvest">LTCG Harvest</a>
+    <a onclick="go('addgoal')" id="nav-addgoal" class="accent">+ New goal</a>
+    <a onclick="go('addtxn')" id="nav-addtxn" class="accent">+ Transaction</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav-status"><div class="nav-dot"></div>NAV live · 6:32 PM</div>
+    <div class="avatar">VK</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: LOGIN
+══════════════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+<div style="min-height:100vh;display:flex;align-items:stretch">
+
+  <!-- LEFT: brand panel -->
+  <div style="flex:1;padding:60px 64px;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:1">
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:500;color:#fff;letter-spacing:-.02em;margin-bottom:6px">WealthTrack</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.45)">Personal investment portfolio tracker</div>
+    </div>
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#fff;line-height:1.3;margin-bottom:16px;font-style:italic">Every rupee. Every goal.<br>Complete clarity.</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:32px">Goal-based portfolio tracking with minimal manual effort. NAVs update automatically. LTCG harvested intelligently. Goals tracked in real-time.</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:center;font-size:13px;color:rgba(255,255,255,.7)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(123,184,154,.15);border:1px solid rgba(123,184,154,.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">📊</div>NAV auto-fetched daily — zero manual updates</div>
+        <div style="display:flex;gap:12px;align-items:center;font-size:13px;color:rgba(255,255,255,.7)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(123,184,154,.15);border:1px solid rgba(123,184,154,.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">📥</div>CAS import populates all folios in 2 minutes</div>
+        <div style="display:flex;gap:12px;align-items:center;font-size:13px;color:rgba(255,255,255,.7)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(123,184,154,.15);border:1px solid rgba(123,184,154,.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">💰</div>LTCG harvest tracker — ₹1.25L limit managed</div>
+        <div style="display:flex;gap:12px;align-items:center;font-size:13px;color:rgba(255,255,255,.7)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(123,184,154,.15);border:1px solid rgba(123,184,154,.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">🔒</div>Tracking only — no trades, no advice, no exposure</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.25)">All data encrypted at rest · Export anytime · DPDP Act 2023 compliant</div>
+  </div>
+
+  <!-- RIGHT: auth card -->
+  <div style="width:460px;display:flex;align-items:center;justify-content:center;padding:40px 48px;position:relative;z-index:1">
+    <div class="glass" style="width:100%;padding:36px">
+      <div style="margin-bottom:28px">
+        <h2 style="font-size:20px;margin-bottom:4px">Welcome back</h2>
+        <p class="hint">Sign in to your portfolio</p>
+      </div>
+      <button onclick="doLogin()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 20px;border-radius:var(--r-sm);border:1px solid rgba(74,102,84,.25);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;transition:all .15s;margin-bottom:20px">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.038l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><div style="flex:1;height:1px;background:rgba(74,102,84,.15)"></div><span class="hint" style="font-size:11px">or</span><div style="flex:1;height:1px;background:rgba(74,102,84,.15)"></div></div>
+      <div class="form-group"><div class="form-label">Email</div><input type="email" class="form-input" placeholder="you@example.com"></div>
+      <div class="form-group" style="margin-bottom:20px"><div class="form-label">Password</div><input type="password" class="form-input" placeholder="••••••••"></div>
+      <button onclick="doLogin()" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-bottom:14px">Sign in →</button>
+      <p style="text-align:center;font-size:12px;color:var(--ink3)">No account? <a onclick="doLogin()" style="color:var(--green);font-weight:500;cursor:pointer">Create one free</a></p>
+      <div class="divider"></div>
+      <div style="font-size:12px;color:var(--ink3);text-align:center;line-height:1.6"><strong style="color:var(--ink2)">Tracking only.</strong> WealthTrack never connects to your broker. No trades executed, no orders placed.</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: ONBOARDING (9 steps)
+══════════════════════════════════════════ -->
+<div id="screen-onboarding" class="screen">
+<div class="ob-page">
+<div class="glass-pine ob-card">
+
+  <!-- Progress bar -->
+  <div class="ob-progress"><div class="ob-progress-fill" id="ob-progress-fill" style="width:11%"></div></div>
+
+  <!-- Steps -->
+  <div id="ob-s1">
+    <div class="ob-step-label">Step 1 of 9 · Profile</div>
+    <div class="ob-question">Let's start with the basics</div>
+    <div class="ob-sub">This helps calculate your FIRE number, goal horizons, and required return rates. Takes about 4 minutes total.</div>
+    <div class="ob-field-row">
+      <div><div class="ob-label">Your name</div><input type="text" class="ob-input" placeholder="e.g. Vikram" id="ob-name"></div>
+      <div><div class="ob-label">Current age</div><input type="number" class="ob-input" placeholder="e.g. 37" id="ob-age"></div>
+    </div>
+    <div style="margin-top:12px"><div class="ob-label">Monthly household expenses (₹)</div><input type="number" class="ob-input" placeholder="e.g. 70000" style="margin-top:6px" id="ob-expense"></div>
+    <div class="ob-nav"><div></div><button class="btn btn-primary btn-lg" onclick="obGo(2)">Next →</button></div>
+  </div>
+
+  <div id="ob-s2" style="display:none">
+    <div class="ob-step-label">Step 2 of 9 · FIRE goal</div>
+    <div class="ob-question">What's your FIRE target?</div>
+    <div class="ob-sub">FIRE = Financial Independence / Retire Early. We'll calculate the corpus you need based on your expenses and safe withdrawal rate.</div>
+    <div class="ob-field-row">
+      <div><div class="ob-label">FIRE target age</div><input type="number" class="ob-input" placeholder="e.g. 45" id="ob-fire-age"></div>
+      <div><div class="ob-label">Safe withdrawal rate</div>
+        <select class="ob-select" id="ob-swr" style="margin-top:0">
+          <option value="2.5">2.5% (very conservative)</option>
+          <option value="2.75" selected>2.75% (conservative)</option>
+          <option value="3">3% (moderate)</option>
+          <option value="3.5">3.5% (standard)</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px"><div class="ob-label">Inflation assumption</div>
+      <select class="ob-select" style="margin-top:6px" id="ob-inflation">
+        <option value="5">5%</option><option value="6" selected>6% (recommended)</option><option value="7">7%</option>
+      </select>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(1)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(3)">Next →</button></div>
+  </div>
+
+  <div id="ob-s3" style="display:none">
+    <div class="ob-step-label">Step 3 of 9 · Existing MF investments</div>
+    <div class="ob-question">Do you have existing mutual fund investments?</div>
+    <div class="ob-sub">We'll import these from your CAS statement or you can add manually. Your CAS contains the full history — folio numbers, all transactions, units, average cost.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <div class="ob-choice selected" id="oc-cas" onclick="selectOC('cas',this)">
+        <div style="font-weight:600;margin-bottom:2px">Import from CAS (recommended)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55)">Email cas@camsonline.com or mystatement@kfintech.com · Upload the PDF · All folios populate automatically</div>
+      </div>
+      <div class="ob-choice" id="oc-manual" onclick="selectOC('manual',this)">
+        <div style="font-weight:600;margin-bottom:2px">Add funds manually</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55)">Enter fund names and folios one by one — takes longer but works without CAS</div>
+      </div>
+      <div class="ob-choice" id="oc-none" onclick="selectOC('none',this)">
+        <div style="font-weight:600;margin-bottom:2px">No existing investments</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55)">Starting fresh — we'll set up goals and funds from scratch</div>
+      </div>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(2)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(4)">Next →</button></div>
+  </div>
+
+  <div id="ob-s4" style="display:none">
+    <div class="ob-step-label">Step 4 of 9 · Goals</div>
+    <div class="ob-question">Which goals are you investing for?</div>
+    <div class="ob-sub">Select all that apply. Each goal gets its own dedicated folios and tracking. You can add or remove goals anytime.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px">
+      <div class="ob-choice" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">🔥</div><div style="font-weight:600;font-size:13px">FIRE</div></div>
+      <div class="ob-choice selected" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">🏫</div><div style="font-weight:600;font-size:13px">School fees</div></div>
+      <div class="ob-choice selected" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">🎓</div><div style="font-weight:600;font-size:13px">Graduation</div></div>
+      <div class="ob-choice selected" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">💍</div><div style="font-weight:600;font-size:13px">Marriage</div></div>
+      <div class="ob-choice" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">🏡</div><div style="font-weight:600;font-size:13px">Home</div></div>
+      <div class="ob-choice" onclick="toggleGoal(this)"><div style="font-size:18px;margin-bottom:4px">✦</div><div style="font-weight:600;font-size:13px">Custom</div></div>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(3)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(5)">Next →</button></div>
+  </div>
+
+  <div id="ob-s5" style="display:none">
+    <div class="ob-step-label">Step 5 of 9 · Goal details</div>
+    <div class="ob-question">Tell us about each goal</div>
+    <div class="ob-sub">Set the target corpus and year. The app never auto-calculates these — they're your personal decisions. You can update any time.</div>
+    <!-- Goal entries -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <div class="fund-entry">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-weight:600;color:#fff;font-size:13px">🏫 Reyaansh School</span>
+          <span class="badge-glass badge" style="font-size:10px">school</span>
+        </div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Target corpus (₹)</div><input type="number" class="ob-input" value="1900000" style="font-size:13px"></div>
+          <div><div class="ob-label">Target year</div><input type="number" class="ob-input" value="2036" style="font-size:13px"></div>
+        </div>
+      </div>
+      <div class="fund-entry">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-weight:600;color:#fff;font-size:13px">🎓 Reyaansh Graduation</span>
+          <span class="badge-glass badge" style="font-size:10px">graduation</span>
+        </div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Target corpus (₹)</div><input type="number" class="ob-input" value="5390000" style="font-size:13px"></div>
+          <div><div class="ob-label">Target year</div><input type="number" class="ob-input" value="2037" style="font-size:13px"></div>
+        </div>
+      </div>
+      <div class="fund-entry">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-weight:600;color:#fff;font-size:13px">💍 Reyaansh Marriage</span>
+          <span class="badge-glass badge" style="font-size:10px">marriage</span>
+        </div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Target corpus (₹)</div><input type="number" class="ob-input" value="4100000" style="font-size:13px"></div>
+          <div><div class="ob-label">Target year</div><input type="number" class="ob-input" value="2044" style="font-size:13px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(4)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(6)">Next →</button></div>
+  </div>
+
+  <div id="ob-s6" style="display:none">
+    <div class="ob-step-label">Step 6 of 9 · Lumpsum investments</div>
+    <div class="ob-question">Any lumpsum investments already made?</div>
+    <div class="ob-sub">These are one-time investments — either already done or planned. Enter each fund you've deployed a lumpsum into.</div>
+    <div id="ob-lumpsums">
+      <div class="fund-entry">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-weight:600;color:#fff;font-size:13px">Lumpsum 1</span>
+          <button class="remove-btn">✕</button>
+        </div>
+        <div><div class="ob-label">Fund name</div>
+          <select class="ob-select" style="margin-top:6px;margin-bottom:10px">
+            <option>Parag Parikh Flexi Cap Fund</option>
+            <option>Axis Nifty 100 Index Fund</option>
+            <option>SBI Nifty Midcap 150 Index</option>
+            <option>Invesco India Small Cap Fund</option>
+            <option>HDFC Short Duration Debt Fund</option>
+            <option>Other (type below)</option>
+          </select>
+        </div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Amount invested (₹)</div><input type="number" class="ob-input" placeholder="e.g. 950000" style="font-size:13px"></div>
+          <div><div class="ob-label">Investment date</div><input type="date" class="ob-input" style="font-size:13px"></div>
+        </div>
+        <div class="ob-field-row" style="margin-top:10px">
+          <div><div class="ob-label">Goal this belongs to</div>
+            <select class="ob-select" style="margin-top:6px">
+              <option>🔥 FIRE</option><option>🏫 Reyaansh School</option><option>🎓 Reyaansh Grad</option><option>💍 Reyaansh Marr</option>
+            </select>
+          </div>
+          <div><div class="ob-label">Folio number (optional)</div><input type="text" class="ob-input" placeholder="e.g. 1234567/89" style="font-size:13px"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-outline-light btn-sm" onclick="addLumpsum()" style="margin-bottom:4px">+ Add another lumpsum</button>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(5)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(7)">Next →</button></div>
+  </div>
+
+  <div id="ob-s7" style="display:none">
+    <div class="ob-step-label">Step 7 of 9 · SIPs</div>
+    <div class="ob-question">Do you have any active SIPs?</div>
+    <div class="ob-sub">Systematic Investment Plans — a fixed amount invested every month. Add each SIP you've set up with your AMC.</div>
+    <div id="ob-sips">
+      <div class="fund-entry">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-weight:600;color:#fff;font-size:13px">SIP 1</span>
+          <button class="remove-btn">✕</button>
+        </div>
+        <div><div class="ob-label">Fund name</div>
+          <select class="ob-select" style="margin-top:6px;margin-bottom:10px">
+            <option>Parag Parikh Flexi Cap Fund</option>
+            <option>Axis Nifty 100 Index Fund</option>
+            <option>SBI Nifty Midcap 150 Index</option>
+            <option>Invesco India Small Cap Fund</option>
+          </select>
+        </div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Monthly SIP amount (₹)</div><input type="number" class="ob-input" placeholder="e.g. 20000" style="font-size:13px" value="20000"></div>
+          <div><div class="ob-label">SIP date (day of month)</div><input type="number" class="ob-input" placeholder="e.g. 28" min="1" max="31" style="font-size:13px" value="28"></div>
+        </div>
+        <div class="ob-field-row" style="margin-top:10px">
+          <div><div class="ob-label">SIP start date</div><input type="date" class="ob-input" style="font-size:13px" value="2023-11-28"></div>
+          <div><div class="ob-label">Goal</div>
+            <select class="ob-select" style="margin-top:6px">
+              <option>🔥 FIRE</option><option>🏫 Reyaansh School</option><option>🎓 Reyaansh Grad</option><option>💍 Reyaansh Marr</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-outline-light btn-sm" onclick="addSip()" style="margin-bottom:4px">+ Add another SIP</button>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(6)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(8)">Next →</button></div>
+  </div>
+
+  <div id="ob-s8" style="display:none">
+    <div class="ob-step-label">Step 8 of 9 · Other assets</div>
+    <div class="ob-question">Any other investments to track?</div>
+    <div class="ob-sub">These don't auto-update but are included in your net worth. You'll update them monthly — takes about 2 minutes.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <div class="fund-entry">
+        <div style="font-weight:600;color:#fff;font-size:13px;margin-bottom:12px">EPF (Employee Provident Fund)</div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Current balance (₹)</div><input type="number" class="ob-input" placeholder="e.g. 3000000" style="font-size:13px"></div>
+          <div><div class="ob-label">Monthly employer contribution</div><input type="number" class="ob-input" placeholder="e.g. 18000" style="font-size:13px"></div>
+        </div>
+      </div>
+      <div class="fund-entry">
+        <div style="font-weight:600;color:#fff;font-size:13px;margin-bottom:12px">NPS (National Pension System)</div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Current balance (₹)</div><input type="number" class="ob-input" placeholder="e.g. 700000" style="font-size:13px"></div>
+          <div><div class="ob-label">Monthly contribution</div><input type="number" class="ob-input" placeholder="e.g. 5000" style="font-size:13px"></div>
+        </div>
+      </div>
+      <div class="fund-entry">
+        <div style="font-weight:600;color:#fff;font-size:13px;margin-bottom:12px">Gold / Silver</div>
+        <div class="ob-field-row">
+          <div><div class="ob-label">Grams held (gold)</div><input type="number" class="ob-input" placeholder="e.g. 120" style="font-size:13px"></div>
+          <div><div class="ob-label">Type</div><select class="ob-select"><option>Physical gold</option><option>SGB (Sovereign Gold Bond)</option><option>Gold ETF</option></select></div>
+        </div>
+      </div>
+      <div class="fund-entry">
+        <div style="font-weight:600;color:#fff;font-size:13px;margin-bottom:12px">Emergency fund</div>
+        <div><div class="ob-label">Balance (₹)</div><input type="number" class="ob-input" placeholder="e.g. 1400000" style="font-size:13px;margin-top:6px"></div>
+      </div>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(7)">← Back</button><button class="btn btn-primary btn-lg" onclick="obGo(9)">Next →</button></div>
+  </div>
+
+  <div id="ob-s9" style="display:none">
+    <div class="ob-step-label">Step 9 of 9 · All done</div>
+    <div class="ob-question">Your portfolio is ready</div>
+    <div class="ob-sub">Here's a summary of what we've set up. You can edit anything from the dashboard. NAVs will start syncing in the background.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+      <div class="fund-entry" style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:rgba(255,255,255,.7);font-size:13px">Profile</span>
+        <span style="color:#fff;font-weight:500">Age 37 · ₹70K/mo expenses · FIRE target 45</span>
+      </div>
+      <div class="fund-entry" style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:rgba(255,255,255,.7);font-size:13px">Goals set up</span>
+        <span style="color:#fff;font-weight:500">4 goals · FIRE, School, Grad, Marriage</span>
+      </div>
+      <div class="fund-entry" style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:rgba(255,255,255,.7);font-size:13px">Lumpsum investments</span>
+        <span style="color:#fff;font-weight:500">1 fund · CAS import pending</span>
+      </div>
+      <div class="fund-entry" style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:rgba(255,255,255,.7);font-size:13px">Active SIPs</span>
+        <span style="color:#fff;font-weight:500">₹20,000/mo · PPFAS Flexi Cap</span>
+      </div>
+      <div class="fund-entry" style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:rgba(255,255,255,.7);font-size:13px">Other assets</span>
+        <span style="color:#fff;font-weight:500">EPF + NPS + Gold + Emergency fund</span>
+      </div>
+    </div>
+    <div class="ob-nav"><button class="btn btn-outline-light" onclick="obGo(8)">← Back</button><button class="btn btn-primary btn-lg" onclick="finishOnboarding()">Go to dashboard →</button></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: DASHBOARD
+══════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen">
+<div class="page" style="padding:24px 0 40px">
+<div class="container">
+
+  <div class="alert alert-amber" style="margin-bottom:20px">
+    <span>⚠</span>
+    <div><strong>LTCG harvest window open</strong> — ₹68,420 available to harvest tax-free before March 31.
+    <a onclick="go('harvest')" style="color:var(--amber);font-weight:600;margin-left:6px;cursor:pointer;text-decoration:underline">Review →</a></div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <!-- Net worth card -->
+    <div class="glass" style="padding:26px">
+      <div class="label" style="margin-bottom:10px">Total net worth</div>
+      <div style="font-size:38px;font-weight:500;color:var(--green);line-height:1;margin-bottom:8px">₹1,52,40,000</div>
+      <span class="badge badge-green">▲ ₹4,12,000 · 2.8% this month</span>
+      <div class="divider"></div>
+      <div class="grid-4" style="gap:8px">
+        <div><div class="hint" style="font-size:11px">MF portfolio</div><div style="font-weight:500;font-size:13px;color:var(--ink);margin-top:2px">₹82.4 L</div></div>
+        <div><div class="hint" style="font-size:11px">EPF + NPS</div><div style="font-weight:500;font-size:13px;color:var(--ink);margin-top:2px">₹37.1 L</div></div>
+        <div><div class="hint" style="font-size:11px">Gold</div><div style="font-weight:500;font-size:13px;color:var(--ink);margin-top:2px">₹8.2 L</div></div>
+        <div><div class="hint" style="font-size:11px">Emergency</div><div style="font-weight:500;font-size:13px;color:var(--ink);margin-top:2px">₹14.0 L</div></div>
+      </div>
+    </div>
+
+    <!-- FIRE panel -->
+    <div class="glass-pine fire-panel">
+      <div style="display:flex;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <div class="label-light">FIRE corpus</div>
+          <div style="font-size:30px;font-weight:500;color:#fff;margin-top:4px">₹36.2 L <span style="font-size:15px;opacity:.6">/ ₹5.0 Cr</span></div>
+        </div>
+        <span class="badge badge-glass">Age 37 → 45</span>
+      </div>
+      <div class="progress-track" style="background:rgba(255,255,255,.15);margin-bottom:14px"><div class="progress-fill pf-green" style="width:7.2%"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div><div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.05em">Progress</div><div style="font-size:17px;font-weight:500;color:#fff;margin-top:3px">7.2%</div></div>
+        <div><div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.05em">Gap</div><div style="font-size:17px;font-weight:500;color:#fff;margin-top:3px">₹4.64 Cr</div></div>
+        <div><div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.05em">Req. CAGR</div><div style="font-size:17px;font-weight:500;color:#fff;margin-top:3px">42.8%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIPs + allocation -->
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="glass-dark" style="padding:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span class="label">Monthly SIPs</span>
+        <span class="badge badge-amber">1 pending</span>
+      </div>
+      <div style="font-size:20px;font-weight:500;margin-bottom:14px;color:var(--ink)">₹45,000<span class="hint" style="font-size:13px;font-weight:400"> /month · 5 SIPs</span></div>
+      <div>
+        <div class="invest-row"><div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div><span style="font-size:12px;color:var(--ink2)">FIRE · PPFAS Flexi Cap</span></div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:13px;font-weight:500">₹20,000</span><span class="badge badge-green" style="font-size:10px;padding:2px 7px">Done</span></div></div>
+        <div class="invest-row"><div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:50%;background:#60A5FA"></div><span style="font-size:12px;color:var(--ink2)">FIRE · Axis Nifty 100</span></div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:13px;font-weight:500">₹10,000</span><span class="badge badge-amber" style="font-size:10px;padding:2px 7px">Pending</span></div></div>
+        <div class="invest-row"><div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:50%;background:#A78BFA"></div><span style="font-size:12px;color:var(--ink2)">Reyaansh Grad</span></div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:13px;font-weight:500">₹8,000</span><span class="badge badge-green" style="font-size:10px;padding:2px 7px">Done</span></div></div>
+        <div class="invest-row"><div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:50%;background:#FB923C"></div><span style="font-size:12px;color:var(--ink2)">Kid2 Grad</span></div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:13px;font-weight:500">₹7,000</span><span class="badge badge-green" style="font-size:10px;padding:2px 7px">Done</span></div></div>
+      </div>
+    </div>
+
+    <div class="glass-dark" style="padding:20px">
+      <span class="label" style="display:block;margin-bottom:14px">Asset allocation</span>
+      <div style="display:flex;align-items:center;gap:24px">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="36" fill="none" stroke="rgba(74,102,84,.15)" stroke-width="16"/>
+          <circle cx="48" cy="48" r="36" fill="none" stroke="#2D8A50" stroke-width="16" stroke-dasharray="90 136" stroke-dashoffset="35" transform="rotate(-90 48 48)"/>
+          <circle cx="48" cy="48" r="36" fill="none" stroke="#2563EB" stroke-width="16" stroke-dasharray="32 194" stroke-dashoffset="-55" transform="rotate(-90 48 48)"/>
+          <circle cx="48" cy="48" r="36" fill="none" stroke="#EA580C" stroke-width="16" stroke-dasharray="21 205" stroke-dashoffset="-87" transform="rotate(-90 48 48)"/>
+          <circle cx="48" cy="48" r="36" fill="none" stroke="#7C3AED" stroke-width="16" stroke-dasharray="13 213" stroke-dashoffset="-108" transform="rotate(-90 48 48)"/>
+          <circle cx="48" cy="48" r="36" fill="none" stroke="#64748B" stroke-width="16" stroke-dasharray="70 156" stroke-dashoffset="-121" transform="rotate(-90 48 48)"/>
+          <text x="48" y="44" text-anchor="middle" font-size="9" fill="#8AA896" font-family="DM Sans">Equity</text>
+          <text x="48" y="55" text-anchor="middle" font-size="12" font-weight="600" fill="#1A2E20" font-family="DM Sans">62%</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-row"><div class="legend-dot" style="background:#2D8A50"></div><span style="flex:1">Large cap</span><strong>39%</strong></div>
+          <div class="legend-row"><div class="legend-dot" style="background:#2563EB"></div><span style="flex:1">Mid cap</span><strong>14%</strong></div>
+          <div class="legend-row"><div class="legend-dot" style="background:#EA580C"></div><span style="flex:1">Small cap</span><strong>9%</strong></div>
+          <div class="legend-row"><div class="legend-dot" style="background:#7C3AED"></div><span style="flex:1">International</span><strong>5%</strong></div>
+          <div class="legend-row"><div class="legend-dot" style="background:#64748B"></div><span style="flex:1">Debt + Gold</span><strong>24%</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal cards -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h2>Goals</h2>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary btn-sm" onclick="go('addgoal')">+ New goal</button>
+      <button class="btn btn-glass btn-sm" onclick="go('goals')">View detail →</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="glass goal-card" onclick="go('goals')" style="border-top-color:var(--green)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:14px">🔥</div><span style="font-weight:500;font-size:13px">FIRE</span></div>
+        <span class="badge badge-amber">Monitor</span>
+      </div>
+      <div class="hint" style="margin-bottom:6px">Target ₹5.0 Cr · Age 45</div>
+      <div style="font-size:19px;font-weight:500;margin-bottom:6px;color:var(--ink)">₹36.2 L</div>
+      <div class="progress-track" style="margin-bottom:8px"><div class="progress-fill pf-amber" style="width:7.2%"></div></div>
+      <div style="display:flex;justify-content:space-between" class="hint"><span>7.2%</span><span>Gap ₹4.64 Cr</span></div>
+    </div>
+    <div class="glass goal-card" onclick="go('goals')" style="border-top-color:#7B3FA0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:#F5EEF8;display:flex;align-items:center;justify-content:center;font-size:14px">🏫</div><span style="font-weight:500;font-size:13px">R. School</span></div>
+        <span class="badge badge-green">On Track</span>
+      </div>
+      <div class="hint" style="margin-bottom:6px">Target ₹19 L · 2036</div>
+      <div style="font-size:19px;font-weight:500;margin-bottom:6px;color:var(--ink)">₹11.8 L</div>
+      <div class="progress-track" style="margin-bottom:8px"><div class="progress-fill pf-green" style="width:62%"></div></div>
+      <div style="display:flex;justify-content:space-between" class="hint"><span>62%</span><span>Gap ₹7.2 L</span></div>
+    </div>
+    <div class="glass goal-card" onclick="go('goals')" style="border-top-color:#C87820">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:14px">🎓</div><span style="font-weight:500;font-size:13px">R. Grad</span></div>
+        <span class="badge badge-green">On Track</span>
+      </div>
+      <div class="hint" style="margin-bottom:6px">Target ₹53.9 L · 2037</div>
+      <div style="font-size:19px;font-weight:500;margin-bottom:6px;color:var(--ink)">₹14.1 L</div>
+      <div class="progress-track" style="margin-bottom:8px"><div class="progress-fill pf-green" style="width:26%"></div></div>
+      <div style="display:flex;justify-content:space-between" class="hint"><span>26%</span><span>Gap ₹39.8 L</span></div>
+    </div>
+    <div class="glass goal-card" onclick="go('addgoal')" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:148px;border-style:dashed;border-top:none">
+      <div style="width:38px;height:38px;border-radius:50%;background:rgba(74,128,96,.12);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--ink3)">+</div>
+      <div style="font-size:13px;font-weight:500;color:var(--ink2)">New goal</div>
+      <div class="hint" style="text-align:center;font-size:11px;line-height:1.5">FIRE · School · Marriage<br>Graduation · Custom</div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: GOAL DETAIL
+══════════════════════════════════════════ -->
+<div id="screen-goals" class="screen">
+<div class="page" style="padding:24px 0 40px"><div class="container">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+    <div class="chips">
+      <div class="chip active">🔥 FIRE</div>
+      <div class="chip">🏫 Reyaansh School</div>
+      <div class="chip">🎓 Reyaansh Grad</div>
+      <div class="chip">💍 Reyaansh Marr</div>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="go('addgoal')" style="margin-left:auto">+ New goal</button>
+  </div>
+
+  <div class="glass" style="padding:26px;margin-bottom:20px;border-left:4px solid var(--green)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
+      <div><div class="label" style="margin-bottom:4px">FIRE Corpus · Age 45 · 8 years remaining</div></div>
+      <div style="display:flex;gap:8px"><span class="badge badge-amber">Monitor ⚠</span><button class="btn btn-primary btn-sm" onclick="go('addtxn')">+ Transaction</button></div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-box yellow"><div style="font-size:11px;color:var(--amber);font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Goal target ₹</div><div style="font-size:20px;font-weight:500">₹5.0 Cr</div><div style="font-size:11px;color:var(--amber);margin-top:4px;cursor:pointer">✏ Edit target</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Lumpsum needed</div><div style="font-size:20px;font-weight:500">₹9.5 L</div><div class="hint" style="margin-top:4px">today's deployment</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Lumpsum invested</div><div style="font-size:20px;font-weight:500">₹9.5 L</div><div class="badge badge-green" style="margin-top:4px;font-size:10px">Fully deployed</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">SIP invested</div><div style="font-size:20px;font-weight:500">₹8.4 L</div><div class="hint" style="margin-top:4px">₹30K/mo · 28 months</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Portfolio value</div><div style="font-size:20px;font-weight:500;color:var(--green)">₹36.2 L</div><div class="nav-confirm" style="margin-top:4px">NAV 6:32 PM</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Gap to target</div><div style="font-size:20px;font-weight:500;color:var(--amber)">₹4.64 Cr</div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Progress</div><div style="font-size:20px;font-weight:500">7.2%</div><div class="progress-track" style="margin-top:8px"><div class="progress-fill pf-amber" style="width:7.2%"></div></div></div>
+      <div class="metric-box"><div class="label" style="margin-bottom:6px">Required CAGR</div><div style="font-size:20px;font-weight:500;color:var(--amber)">42.8%</div><div class="hint" style="margin-top:4px">from current value</div></div>
+    </div>
+    <div style="background:rgba(74,128,96,.07);border-radius:var(--r-sm);padding:12px 16px;margin-top:14px;font-size:13px;color:var(--ink2)">
+      <strong style="color:var(--ink)">Projection:</strong> Lumpsum ₹9.5L → <strong>₹2.63 Cr</strong> · SIP ₹30K/mo → <strong>₹2.18 Cr</strong> · Combined: <strong style="color:var(--green)">₹4.81 Cr</strong> vs target ₹5.0 Cr
+    </div>
+  </div>
+
+  <div class="inner-tabs"><div class="inner-tab active">Folio register</div><div class="inner-tab">SIP tracker</div><div class="inner-tab">Snapshot</div><div class="inner-tab">Transactions</div></div>
+  <div class="glass" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Fund</th><th>Alloc</th><th>Lumpsum invested</th><th>SIP invested</th><th>Lumpsum needed</th><th>Still to invest</th><th>Units</th><th>Value</th><th>SIP</th></tr></thead>
+      <tbody>
+        <tr><td><div style="font-weight:500">Axis Nifty 100 Index</div><div class="hint">Large cap index</div></td><td><span class="badge badge-gray">25%</span></td><td>₹2,37,500</td><td>₹2,10,000</td><td>₹2,37,500</td><td><span style="color:var(--green);font-weight:500">₹0</span></td><td class="mono" style="font-size:12px">1,284.041</td><td><strong>₹9.1 L</strong></td><td><span class="badge badge-amber">Pending</span></td></tr>
+        <tr><td><div style="font-weight:500">Parag Parikh Flexi Cap</div><div class="hint">Flexi cap active</div></td><td><span class="badge badge-gray">40%</span></td><td>₹3,80,000</td><td>₹3,36,000</td><td>₹3,80,000</td><td><span style="color:var(--green);font-weight:500">₹0</span></td><td class="mono" style="font-size:12px">4,072.183</td><td><strong>₹14.6 L</strong></td><td><span class="badge badge-green">Active ✓</span></td></tr>
+        <tr><td><div style="font-weight:500">SBI Nifty Midcap 150</div><div class="hint">Mid cap index</div></td><td><span class="badge badge-gray">22%</span></td><td>₹2,09,000</td><td>₹1,84,800</td><td>₹2,09,000</td><td><span style="color:var(--green);font-weight:500">₹0</span></td><td class="mono" style="font-size:12px">2,114.726</td><td><strong>₹8.2 L</strong></td><td><span class="badge badge-green">Active ✓</span></td></tr>
+        <tr><td><div style="font-weight:500">Invesco India Small Cap</div><div class="hint">Small cap active</div></td><td><span class="badge badge-gray">13%</span></td><td>₹1,23,500</td><td>₹1,09,200</td><td>₹1,23,500</td><td><span style="color:var(--green);font-weight:500">₹0</span></td><td class="mono" style="font-size:12px">1,084.342</td><td><strong>₹4.3 L</strong></td><td><span class="badge badge-green">Active ✓</span></td></tr>
+        <tr style="background:rgba(74,128,96,.06)"><td><strong>Total</strong></td><td><strong>100%</strong></td><td><strong>₹9,50,000</strong></td><td><strong>₹8,40,000</strong></td><td><strong>₹9,50,000</strong></td><td><strong style="color:var(--green)">₹0</strong></td><td>—</td><td><strong style="color:var(--green)">₹36.2 L</strong></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></div>
+</div>
+
+<!-- ADD TXN -->
+<div id="screen-addtxn" class="screen">
+<div style="min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 20px;position:relative;z-index:1">
+<div class="glass" style="width:460px;padding:28px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <h2>Add transaction</h2>
+    <button onclick="go('goals')" style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);border:none;cursor:pointer;font-size:14px;color:var(--ink2);display:flex;align-items:center;justify-content:center">✕</button>
+  </div>
+  <div class="form-group"><div class="form-label">Type</div><div class="segment" style="margin-top:4px"><div class="seg-btn active" onclick="setSeg(this)">Buy — lumpsum</div><div class="seg-btn" onclick="setSeg(this)">Buy — SIP</div><div class="seg-btn" onclick="setSeg(this)">Redeem</div></div></div>
+  <div class="form-row"><div class="form-group"><div class="form-label">Goal</div><select class="form-input"><option>🔥 FIRE</option><option>🏫 R. School</option><option>🎓 R. Grad</option></select></div><div class="form-group"><div class="form-label">Fund</div><select class="form-input"><option>PPFAS Flexi Cap</option><option>Axis Nifty 100</option><option>SBI Midcap 150</option><option>Invesco Small Cap</option></select></div></div>
+  <div class="form-row"><div class="form-group"><div class="form-label">Date</div><input type="date" class="form-input" value="2026-03-31" onchange="navFill2()"></div><div class="form-group"><div class="form-label">Amount (₹)</div><input type="number" class="form-input" placeholder="e.g. 20000" id="ta2" oninput="tu2()"></div></div>
+  <div class="form-row">
+    <div class="form-group"><div class="form-label">NAV <span class="nav-confirm">✓ Auto-fetched</span></div><input type="number" class="form-input input-auto" id="tn2" value="86.45" oninput="tu2()"></div>
+    <div class="form-group"><div class="form-label">Units <span class="hint">(auto)</span></div><input type="number" class="form-input" id="tu2el" readonly style="background:rgba(0,0,0,.04);color:var(--ink2)" placeholder="—"></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:6px">
+    <button class="btn btn-glass" style="flex:1" onclick="go('goals')">Cancel</button>
+    <button class="btn btn-primary" style="flex:2">Save transaction</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ADD GOAL WIZARD -->
+<div id="screen-addgoal" class="screen">
+<div class="ob-page">
+<div class="glass ob-card" style="background:rgba(255,255,255,.78)">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+    <button class="btn btn-ghost btn-sm" onclick="go('dashboard')">←</button>
+    <h2>Create new goal</h2>
+  </div>
+  <!-- steps indicator -->
+  <div class="steps">
+    <div class="step"><div class="step-circle sc-active" id="ag-c1">1</div><div class="step-label active" id="ag-l1">Type & name</div></div>
+    <div class="step-line" id="ag-line1"></div>
+    <div class="step"><div class="step-circle sc-pending" id="ag-c2">2</div><div class="step-label" id="ag-l2">Target & timeline</div></div>
+    <div class="step-line" id="ag-line2"></div>
+    <div class="step"><div class="step-circle sc-pending" id="ag-c3">3</div><div class="step-label" id="ag-l3">Funds</div></div>
+  </div>
+
+  <div id="ag-step1">
+    <h3 style="margin-bottom:14px">What kind of goal?</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">🔥</div><div style="font-size:12px;font-weight:600">FIRE</div></div>
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">🏫</div><div style="font-size:12px;font-weight:600">School fees</div></div>
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">🎓</div><div style="font-size:12px;font-weight:600">Graduation</div></div>
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">💍</div><div style="font-size:12px;font-weight:600">Marriage</div></div>
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">🏡</div><div style="font-size:12px;font-weight:600">House</div></div>
+      <div class="goal-type-card" onclick="selectGT(this)"><div class="gtc-check">✓</div><div style="font-size:20px;margin-bottom:6px">✦</div><div style="font-size:12px;font-weight:600">Custom</div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0"><div class="form-label">Goal name</div><input type="text" class="form-input" placeholder='e.g. "Kid2 Graduation"' id="ag-name"></div>
+      <div class="form-group" style="margin-bottom:0"><div class="form-label">For (optional)</div><input type="text" class="form-input" placeholder='e.g. "Kid 2"'></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:20px"><button class="btn btn-primary" onclick="agGo(2)">Next →</button></div>
+  </div>
+
+  <div id="ag-step2" style="display:none">
+    <h3 style="margin-bottom:14px">Target & timeline</h3>
+    <div class="form-row">
+      <div class="form-group"><div class="form-label">Target corpus (₹)</div><input type="number" class="form-input" placeholder="e.g. 5390000" id="ag-target" oninput="agCalc()"><div class="form-hint">Your decision — never auto-set</div></div>
+      <div class="form-group"><div class="form-label">Target year</div><input type="number" class="form-input" placeholder="e.g. 2037" id="ag-year" oninput="agCalc()"></div>
+    </div>
+    <div id="ag-preview" style="display:none;background:rgba(74,128,96,.07);border-radius:var(--r-sm);padding:14px;margin-bottom:14px">
+      <div class="hint" style="margin-bottom:8px;font-size:11px">Indicative at 12% CAGR equity</div>
+      <div class="grid-3" style="gap:10px">
+        <div class="metric-box" style="padding:10px 12px"><div class="hint" style="font-size:11px">Horizon</div><div style="font-weight:500;margin-top:2px" id="ag-horizon">—</div></div>
+        <div class="metric-box" style="padding:10px 12px"><div class="hint" style="font-size:11px">Lumpsum today</div><div style="font-weight:500;margin-top:2px" id="ag-lump">—</div></div>
+        <div class="metric-box" style="padding:10px 12px"><div class="hint" style="font-size:11px">Monthly SIP</div><div style="font-weight:500;margin-top:2px" id="ag-sip">—</div></div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:0"><div class="form-label">Investment mode</div>
+      <div class="segment" style="margin-top:4px">
+        <div class="seg-btn active" onclick="setSeg(this)">Lumpsum only</div>
+        <div class="seg-btn" onclick="setSeg(this)">SIP only</div>
+        <div class="seg-btn" onclick="setSeg(this)">Lumpsum + SIP</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:20px">
+      <button class="btn btn-glass" onclick="agGo(1)">← Back</button>
+      <button class="btn btn-primary" onclick="agGo(3)">Next →</button>
+    </div>
+  </div>
+
+  <div id="ag-step3" style="display:none">
+    <h3 style="margin-bottom:5px">Funds & allocation</h3>
+    <p class="hint" style="margin-bottom:16px">Allocation % must total 100%</p>
+    <div id="ag-funds">
+      <div class="fund-entry" style="background:rgba(74,128,96,.06);border-color:rgba(74,102,84,.2)">
+        <div style="display:grid;grid-template-columns:1fr 80px 90px 24px;gap:10px;align-items:end">
+          <div class="form-group" style="margin-bottom:0"><div class="form-label">Fund</div><select class="form-input"><option>Parag Parikh Flexi Cap</option><option>Axis Nifty 100 Index</option><option>SBI Nifty Midcap 150</option><option>Invesco India Small Cap</option><option>HDFC Short Duration Debt</option></select></div>
+          <div class="form-group" style="margin-bottom:0"><div class="form-label">Alloc %</div><input type="number" class="form-input" value="40" oninput="checkAG()"></div>
+          <div class="form-group" style="margin-bottom:0"><div class="form-label">Folio no.</div><input type="text" class="form-input" placeholder="Optional"></div>
+          <button class="remove-btn" onclick="this.closest('.fund-entry').remove();checkAG()" style="margin-bottom:2px">✕</button>
+        </div>
+      </div>
+    </div>
+    <div id="ag-alloc" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--amber-l);border-radius:var(--r-sm);margin:12px 0;font-size:13px">
+      <span style="font-weight:600;color:var(--amber)" id="ag-alloc-pct">40%</span>
+      <span style="color:var(--amber)">allocated — needs to reach 100%</span>
+    </div>
+    <button class="btn btn-glass btn-sm" onclick="addAGFund()">+ Add fund</button>
+    <div style="display:flex;justify-content:space-between;margin-top:20px">
+      <button class="btn btn-glass" onclick="agGo(2)">← Back</button>
+      <button class="btn btn-primary" onclick="go('goals');alert('Goal created!')">Create goal →</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- HARVEST placeholder -->
+<div id="screen-harvest" class="screen">
+<div class="page" style="padding:24px 0"><div class="container">
+  <h1 style="color:#fff;margin-bottom:20px">LTCG Harvest Tracker</h1>
+  <div class="glass" style="padding:24px;text-align:center;color:var(--ink2)">
+    <div style="font-size:32px;margin-bottom:12px">💰</div>
+    <p>Full harvest tracker available — see previous version for the detailed LTCG screen.</p>
+    <button class="btn btn-glass" style="margin-top:16px" onclick="go('dashboard')">← Dashboard</button>
+  </div>
+</div></div>
+</div>
+
+<div id="screen-transactions" class="screen">
+<div class="page" style="padding:24px 0"><div class="container">
+  <h1 style="color:#fff;margin-bottom:20px">Transactions</h1>
+  <div class="glass" style="padding:0;overflow:hidden">
+    <table>
+      <thead><tr><th>Date</th><th>Fund</th><th>Goal</th><th>Type</th><th style="text-align:right">Amount</th><th style="text-align:right">NAV</th><th style="text-align:right">Units</th><th>Tax</th></tr></thead>
+      <tbody>
+        <tr><td class="mono" style="font-size:12px;color:var(--ink3)">28 Mar 2026</td><td><div style="font-weight:500">PPFAS Flexi Cap</div></td><td><span class="badge badge-gray">FIRE</span></td><td><span class="badge badge-blue" style="font-size:10px">SIP</span></td><td style="text-align:right;font-weight:500">₹20,000</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">86.45</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">231.412</td><td><span class="badge badge-amber" style="font-size:10px">STCG</span></td></tr>
+        <tr><td class="mono" style="font-size:12px;color:var(--ink3)">14 Feb 2026</td><td><div style="font-weight:500">Invesco Small Cap</div></td><td><span class="badge badge-gray">FIRE</span></td><td><span class="badge badge-red" style="font-size:10px">Redeem</span></td><td style="text-align:right;font-weight:500">₹1,04,200</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">52.10</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">2,000.000</td><td><span class="badge badge-green" style="font-size:10px">LTCG</span></td></tr>
+        <tr><td class="mono" style="font-size:12px;color:var(--ink3)">01 Mar 2026</td><td><div style="font-weight:500">HDFC Short Duration</div></td><td><span class="badge badge-gray" style="background:#F5EEF8;color:#7B3FA0">R.School</span></td><td><span class="badge badge-green" style="font-size:10px">Buy</span></td><td style="text-align:right;font-weight:500">₹9,50,000</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">24.81</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px">38,290.20</td><td><span class="badge badge-gray" style="font-size:10px">—</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:16px"><button class="btn btn-primary btn-sm" onclick="go('addtxn')">+ Add transaction</button></div>
+</div></div>
+</div>
+
+<script>
+var obStep = 1;
+
+function doLogin(){
+  document.getElementById('screen-login').style.display='none';
+  document.getElementById('topbar').style.display='flex';
+  document.getElementById('screen-onboarding').classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-onboarding').classList.add('active');
+}
+
+function go(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  var el=document.getElementById('screen-'+name);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.topnav a').forEach(a=>a.classList.remove('active'));
+  var m={dashboard:'nav-dashboard',goals:'nav-goals',transactions:'nav-transactions',harvest:'nav-harvest',addgoal:'nav-addgoal',addtxn:'nav-addtxn'};
+  if(m[name]){var n=document.getElementById(m[name]);if(n)n.classList.add('active');}
+  window.scrollTo(0,0);
+}
+
+function obGo(n){
+  for(var i=1;i<=9;i++){var s=document.getElementById('ob-s'+i);if(s)s.style.display=i===n?'block':'none';}
+  var pct=Math.round(n/9*100);
+  var pf=document.getElementById('ob-progress-fill');
+  if(pf) pf.style.width=pct+'%';
+  obStep=n;
+}
+
+function selectOC(type,el){
+  document.querySelectorAll('.ob-choice').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleGoal(el){ el.classList.toggle('selected'); }
+
+function finishOnboarding(){
+  document.getElementById('topbar').style.display='flex';
+  go('dashboard');
+}
+
+function selectGT(el){
+  document.querySelectorAll('.goal-type-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function agGo(n){
+  for(var i=1;i<=3;i++){
+    var s=document.getElementById('ag-step'+i);if(s)s.style.display=i===n?'block':'none';
+    var ci=document.getElementById('ag-c'+i);
+    var li=document.getElementById('ag-l'+i);
+    var ln=document.getElementById('ag-line'+i);
+    if(!ci)continue;
+    if(i<n){ci.className='step-circle sc-done';ci.innerHTML='✓';}
+    else if(i===n){ci.className='step-circle sc-active';ci.innerHTML=i;}
+    else{ci.className='step-circle sc-pending';ci.innerHTML=i;}
+    if(li)li.className='step-label'+(i===n?' active':'');
+    if(ln&&i<3)ln.className='step-line'+(i<n?' done':'');
+  }
+}
+
+function agCalc(){
+  var tg=parseFloat(document.getElementById('ag-target').value)||0;
+  var yr=parseInt(document.getElementById('ag-year').value)||0;
+  var prev=document.getElementById('ag-preview');
+  if(tg>0&&yr>=2026&&prev){
+    prev.style.display='block';
+    var h=yr-2026;
+    var lump=tg/Math.pow(1.12,h);
+    var r=0.12/12,n2=h*12;
+    var sip=n2>0?tg*r/((Math.pow(1+r,n2)-1)*(1+r)):0;
+    document.getElementById('ag-horizon').textContent=h+' years';
+    document.getElementById('ag-lump').textContent='₹'+(lump/100000).toFixed(1)+' L';
+    document.getElementById('ag-sip').textContent='₹'+Math.round(sip).toLocaleString('en-IN')+'/mo';
+  }
+}
+
+function checkAG(){
+  var inputs=document.querySelectorAll('#ag-funds .fund-entry input[type="number"]');
+  var t=0;inputs.forEach(i=>t+=parseFloat(i.value)||0);
+  var el=document.getElementById('ag-alloc');
+  var pt=document.getElementById('ag-alloc-pct');
+  if(!el||!pt)return;
+  pt.textContent=t+'%';
+  if(t===100){el.style.background='var(--green-l)';pt.style.color='var(--green)';el.querySelector('span:last-child').style.color='var(--green)';el.querySelector('span:last-child').textContent='allocated ✓';}
+  else{el.style.background='var(--amber-l)';pt.style.color='var(--amber)';el.querySelector('span:last-child').style.color='var(--amber)';el.querySelector('span:last-child').textContent='allocated — needs to reach 100%';}
+}
+
+function addAGFund(){
+  var c=document.getElementById('ag-funds');
+  var d=document.createElement('div');
+  d.className='fund-entry';d.style.cssText='background:rgba(74,128,96,.06);border-color:rgba(74,102,84,.2)';
+  d.innerHTML='<div style="display:grid;grid-template-columns:1fr 80px 90px 24px;gap:10px;align-items:end"><div class="form-group" style="margin-bottom:0"><div class="form-label">Fund</div><select class="form-input"><option>Axis Nifty 100 Index</option><option>Parag Parikh Flexi Cap</option><option>SBI Nifty Midcap 150</option><option>Invesco India Small Cap</option></select></div><div class="form-group" style="margin-bottom:0"><div class="form-label">Alloc %</div><input type="number" class="form-input" value="0" oninput="checkAG()"></div><div class="form-group" style="margin-bottom:0"><div class="form-label">Folio no.</div><input type="text" class="form-input" placeholder="Optional"></div><button class="remove-btn" onclick="this.closest(\'.fund-entry\').remove();checkAG()" style="margin-bottom:2px">✕</button></div>';
+  c.appendChild(d);
+}
+
+function addLumpsum(){
+  var c=document.getElementById('ob-lumpsums');
+  var n=c.querySelectorAll('.fund-entry').length+1;
+  var d=document.createElement('div');d.className='fund-entry';
+  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-weight:600;color:#fff;font-size:13px">Lumpsum '+n+'</span><button class="remove-btn" onclick="this.closest(\'.fund-entry\').remove()">✕</button></div><div><div class="ob-label">Fund name</div><select class="ob-select" style="margin-top:6px;margin-bottom:10px"><option>Parag Parikh Flexi Cap Fund</option><option>Axis Nifty 100 Index Fund</option><option>SBI Nifty Midcap 150 Index</option><option>Invesco India Small Cap Fund</option><option>HDFC Short Duration Debt Fund</option></select></div><div class="ob-field-row"><div><div class="ob-label">Amount (₹)</div><input type="number" class="ob-input" placeholder="e.g. 500000" style="font-size:13px"></div><div><div class="ob-label">Investment date</div><input type="date" class="ob-input" style="font-size:13px"></div></div><div class="ob-field-row" style="margin-top:10px"><div><div class="ob-label">Goal</div><select class="ob-select" style="margin-top:0"><option>🔥 FIRE</option><option>🏫 Reyaansh School</option><option>🎓 Reyaansh Grad</option></select></div><div><div class="ob-label">Folio number</div><input type="text" class="ob-input" placeholder="Optional" style="font-size:13px"></div></div>';
+  c.appendChild(d);
+}
+
+function addSip(){
+  var c=document.getElementById('ob-sips');
+  var n=c.querySelectorAll('.fund-entry').length+1;
+  var d=document.createElement('div');d.className='fund-entry';
+  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-weight:600;color:#fff;font-size:13px">SIP '+n+'</span><button class="remove-btn" onclick="this.closest(\'.fund-entry\').remove()">✕</button></div><div><div class="ob-label">Fund name</div><select class="ob-select" style="margin-top:6px;margin-bottom:10px"><option>Parag Parikh Flexi Cap Fund</option><option>Axis Nifty 100 Index Fund</option><option>SBI Nifty Midcap 150 Index</option><option>Invesco India Small Cap Fund</option></select></div><div class="ob-field-row"><div><div class="ob-label">Monthly amount (₹)</div><input type="number" class="ob-input" placeholder="e.g. 10000" style="font-size:13px"></div><div><div class="ob-label">SIP date (day of month)</div><input type="number" class="ob-input" placeholder="e.g. 5" style="font-size:13px"></div></div><div class="ob-field-row" style="margin-top:10px"><div><div class="ob-label">Start date</div><input type="date" class="ob-input" style="font-size:13px"></div><div><div class="ob-label">Goal</div><select class="ob-select" style="margin-top:0"><option>🔥 FIRE</option><option>🏫 Reyaansh School</option><option>🎓 Reyaansh Grad</option></select></div></div>';
+  c.appendChild(d);
+}
+
+function setSeg(el){el.closest('.segment').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function navFill2(){var n=document.getElementById('tn2');if(n){n.value=(84+Math.random()*4).toFixed(2);tu2();}}
+function tu2(){var a=parseFloat((document.getElementById('ta2')||{}).value)||0,n=parseFloat((document.getElementById('tn2')||{}).value)||0,u=document.getElementById('tu2el');if(u)u.value=(a>0&&n>0)?(a/n).toFixed(3):'';}
+</script>
+</body>
+</html>

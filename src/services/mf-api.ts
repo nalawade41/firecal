@@ -53,6 +53,7 @@ function getAmcSearchTerms(amc: string): string[] {
   // Map of known AMC variations
   const amcMappings: Record<string, string[]> = {
     "sbi": ["sbi", "sbi mutual", "sbi mutual fund", "state bank of india"],
+    "axis": ["axis", "axis mutual", "axis mutual fund"],
   }
   
   return amcMappings[normalized] || [normalized]

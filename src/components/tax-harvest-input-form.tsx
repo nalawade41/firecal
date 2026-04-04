@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NumberField } from "@/components/ui/number-field"
 import { Plus, Trash2, Upload, Calculator, Loader2, ChevronDown, Search } from "lucide-react"
-import { getCurrentFinancialYear, parseCSVTransactions } from "@/engine/tax-harvest/calculator"
+import { getCurrentFinancialYear, parseAMCFile } from "@/engine/tax-harvest/calculator"
 import { fetchSchemeList, filterSchemesByAmc, fetchLatestNav, type MFScheme, clearMfApiCache } from "@/services/mf-api"
 
 /**
@@ -182,28 +182,24 @@ export function TaxHarvestInputForm({ onCalculate }: TaxHarvestInputFormProps) {
     }))
   }
 
-  function handleCSVImport(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileImport(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
     
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      try {
-        const csvText = ev.target?.result as string
-        const parsedTransactions = parseCSVTransactions(csvText, amc)
-        
-        // Add fund name to transactions if available
-        const txsWithFund = parsedTransactions.map(tx => ({
-          ...tx,
-          fundName: fundName || tx.fundName
-        }))
-        
-        setTransactions([...transactions, ...txsWithFund])
-      } catch {
-        alert("Failed to parse CSV. Please check the format.")
-      }
+    try {
+      const parsedTransactions = await parseAMCFile(file, amc)
+      
+      // Add fund name to transactions if available
+      const txsWithFund = parsedTransactions.map(tx => ({
+        ...tx,
+        fundName: fundName || tx.fundName
+      }))
+      
+      setTransactions([...transactions, ...txsWithFund])
+    } catch (error) {
+      alert(`Failed to parse file: ${error instanceof Error ? error.message : "Unknown error"}`)
     }
-    reader.readAsText(file)
+    
     e.target.value = ""
   }
 
@@ -268,6 +264,7 @@ export function TaxHarvestInputForm({ onCalculate }: TaxHarvestInputFormProps) {
               className="w-full h-10 px-3 rounded-md border border-input bg-white/60 text-sm"
             >
               <option value="sbi">SBI Mutual Fund</option>
+              <option value="axis">Axis Mutual Fund</option>
             </select>
           </div>
           <div className="space-y-2 min-w-0" ref={dropdownRef}>
@@ -447,7 +444,7 @@ export function TaxHarvestInputForm({ onCalculate }: TaxHarvestInputFormProps) {
               )}
             </h3>
             <p className="text-sm text-muted-foreground mt-0.5">
-              Add buy, SIP, sell transactions or import from CSV
+              Add buy, SIP, sell transactions or import from {amc === "axis" ? "CSV/PDF" : "CSV"}
             </p>
           </div>
           <div className="flex gap-2">
@@ -458,14 +455,14 @@ export function TaxHarvestInputForm({ onCalculate }: TaxHarvestInputFormProps) {
               className="bg-white/60"
             >
               <Upload className="h-4 w-4 mr-1" />
-              Import CSV
+              {amc === "axis" ? "Import CSV/PDF" : "Import CSV"}
             </Button>
             <input
               ref={fileInputRef}
               type="file"
-              accept=".csv"
+              accept={amc === "axis" ? ".csv,.pdf" : ".csv"}
               className="hidden"
-              onChange={handleCSVImport}
+              onChange={handleFileImport}
             />
             <Button
               variant="outline"
@@ -490,7 +487,7 @@ export function TaxHarvestInputForm({ onCalculate }: TaxHarvestInputFormProps) {
 
         {transactions.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-8">
-            No transactions added yet. Add manually or import from CSV.
+            No transactions added yet. Add manually or import from {amc === "axis" ? "CSV/PDF" : "CSV"}.
           </p>
         ) : (
           <div className="max-h-[400px] overflow-y-auto pr-2 space-y-3">

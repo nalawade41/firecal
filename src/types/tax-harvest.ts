@@ -42,7 +42,7 @@ export interface Fund {
   lots: Lot[]
 }
 
-export type AMC = "sbi" | "generic"
+export type AMC = "sbi" | "axis" | "generic"
 
 export interface TaxHarvestInputs {
   fundName: string
