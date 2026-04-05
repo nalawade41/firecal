@@ -11,7 +11,7 @@ import { TaxHarvestInputForm } from "@/components/tax-harvest-input-form"
 import { TaxHarvestResultsView } from "@/components/tax-harvest-results"
 import { calculateTaxHarvest } from "@/engine/tax-harvest/calculator"
 import { Flame, Leaf, BarChart3 } from "lucide-react"
-// import { TrackingPage } from "@/pages/Tracking"
+import { TrackingPage } from "@/pages/Tracking"
 
 function FireCalculator() {
   const [results, setResults] = useState<FireResults | null>(null)
@@ -109,7 +109,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<FireCalculator />} />
           <Route path="/tax-harvest" element={<TaxHarvestTool />} />
-          {/* <Route path="/tracking" element={<TrackingPage />} /> */}
+          <Route path="/tracking" element={<TrackingPage />} />
         </Routes>
       </main>
 

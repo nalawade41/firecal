@@ -2,6 +2,8 @@ import { useState } from "react"
 import { ArrowLeft, ArrowRight, LayoutDashboard } from "lucide-react"
 import type { OnboardingStepMeta, OnboardingData } from "@/types/onboarding"
 import { DEFAULT_ONBOARDING_DATA } from "@/types/onboarding"
+import { prefetchSchemeList } from "@/hooks/useMfSchemes"
+import { prefetchMetalPrices } from "@/services/metal-api"
 import { StepProfile } from "./steps/StepProfile"
 import { StepExpenses } from "./steps/StepExpenses"
 import { StepGoalSelection } from "./steps/StepGoalSelection"
@@ -136,6 +138,10 @@ export function OnboardingFlow({ onFinish, onBack }: OnboardingFlowProps) {
 
   function handleNext() {
     if (!canProceed) return
+    if (step.id === "goal-details") {
+      prefetchSchemeList()
+      prefetchMetalPrices()
+    }
     if (isLast) {
       onFinish()
     } else {

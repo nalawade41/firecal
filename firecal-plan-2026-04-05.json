@@ -1,0 +1,360 @@
+{
+  "profile": {
+    "currentAge": 39,
+    "retirementAge": 45,
+    "lifeExpectancy": 90,
+    "numberOfChildren": 2
+  },
+  "expenses": {
+    "annualHouseholdExpense": 80000,
+    "expenseInflationPercent": 6,
+    "retirementAdjustmentFactor": 1
+  },
+  "investments": {
+    "mfPortfolio": 0,
+    "nps": 0,
+    "epf": 0,
+    "ppf": 0,
+    "goldGrams": 0,
+    "silverGrams": 0,
+    "emergencyFund": 0,
+    "savingsAccountBalance": 0,
+    "otherAmount": 0
+  },
+  "selectedGoals": [
+    "fire",
+    "school-fees",
+    "whitegoods",
+    "marriage",
+    "graduation"
+  ],
+  "customGoalDefinitions": [],
+  "goalDetails": {
+    "whitegoods": [
+      {
+        "itemName": "Refrigerator, Oven, Washing Machine, TV",
+        "currentCost": 125000,
+        "inflationExpected": 5,
+        "replacementFrequencyYears": 15,
+        "expectedReturns": 13
+      },
+      {
+        "itemName": "Home Renovation & Furniture",
+        "currentCost": 400000,
+        "inflationExpected": 4,
+        "replacementFrequencyYears": 15,
+        "expectedReturns": 10
+      },
+      {
+        "itemName": "Car",
+        "currentCost": 1000000,
+        "inflationExpected": 5,
+        "replacementFrequencyYears": 20,
+        "expectedReturns": 10
+      }
+    ],
+    "schoolFees": [
+      {
+        "label": "Reyaansh Scool",
+        "childCurrentAge": 6,
+        "schoolStartingAge": 6,
+        "currentSchoolFeeYearly": 120000,
+        "expectedInflationYearly": 11,
+        "feeHikeEveryNYears": 2,
+        "totalSchoolYears": 12,
+        "expectedReturns": 12
+      },
+      {
+        "label": "Kid 2 School",
+        "childCurrentAge": 0,
+        "schoolStartingAge": 6,
+        "currentSchoolFeeYearly": 120000,
+        "expectedInflationYearly": 11,
+        "feeHikeEveryNYears": 2,
+        "totalSchoolYears": 12,
+        "expectedReturns": 13
+      }
+    ],
+    "fire": {
+      "targetAge": 45,
+      "safeWithdrawalRate": 2.5,
+      "inflationAssumed": 6,
+      "postRetirementReturn": 13,
+      "fireModel": "perpetual",
+      "expectedReturns": 13
+    },
+    "marriage": [
+      {
+        "label": "Reyaansh Marriage",
+        "marriageCostCurrent": 2000000,
+        "yearsRemaining": 19,
+        "expectedInflationYearly": 5,
+        "bufferPercent": 0,
+        "expectedReturns": 13
+      },
+      {
+        "label": "Kid 2 Marriage",
+        "marriageCostCurrent": 2000000,
+        "yearsRemaining": 25,
+        "expectedInflationYearly": 5,
+        "bufferPercent": 0,
+        "expectedReturns": 13
+      }
+    ],
+    "graduation": [
+      {
+        "label": "Reyaansh Graduation",
+        "graduationCostCurrent": 4000000,
+        "expectedInflationYearly": 5,
+        "horizonYears": 12,
+        "expectedReturns": 13
+      },
+      {
+        "label": "Kid 2 Graduation",
+        "graduationCostCurrent": 4000000,
+        "expectedInflationYearly": 5,
+        "horizonYears": 18,
+        "expectedReturns": 13
+      }
+    ]
+  },
+  "lumpsumInvestments": [
+    {
+      "id": "ls-1775215489621",
+      "fundName": "Axis Nifty 100 Index Fund - Direct Plan - Growth Option",
+      "amount": 92500,
+      "dateOfInvestment": "2026-03-30",
+      "units": 4534.6027,
+      "goalId": "marriage::Kid 2 Marriage",
+      "folioNumber": "910224126823",
+      "amc": "axis",
+      "schemeCode": "147666"
+    },
+    {
+      "id": "ls-1775363725825",
+      "amc": "axis",
+      "schemeCode": "147666",
+      "fundName": "Axis Nifty 100 Index Fund - Direct Plan - Growth Option",
+      "amount": 50000,
+      "dateOfInvestment": "2026-03-30",
+      "units": 2451.1366,
+      "goalId": "marriage::Reyaansh Marriage",
+      "folioNumber": "910224093235"
+    },
+    {
+      "id": "ls-1775363735555",
+      "amc": "parag",
+      "schemeCode": "122639",
+      "fundName": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth",
+      "amount": 48000,
+      "dateOfInvestment": "2026-04-01",
+      "units": 555.9165,
+      "goalId": "marriage::Kid 2 Marriage",
+      "folioNumber": "19680563"
+    },
+    {
+      "id": "ls-1775363742905",
+      "amc": "parag",
+      "schemeCode": "122639",
+      "fundName": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth",
+      "amount": 100000,
+      "dateOfInvestment": "2026-04-02",
+      "units": 1155.8622,
+      "goalId": "marriage::Kid 2 Marriage",
+      "folioNumber": "19680563"
+    },
+    {
+      "id": "ls-1775363748067",
+      "amc": "invesco",
+      "schemeCode": "145137",
+      "fundName": "Invesco India Smallcap Fund - Direct Plan - Growth",
+      "amount": 48100,
+      "dateOfInvestment": "2026-03-30",
+      "units": 1171.7418,
+      "goalId": "marriage::Kid 2 Marriage",
+      "folioNumber": "31043803594"
+    },
+    {
+      "id": "ls-1775363780077",
+      "amc": "invesco",
+      "schemeCode": "145137",
+      "fundName": "Invesco India Smallcap Fund - Direct Plan - Growth",
+      "amount": 63700,
+      "dateOfInvestment": "2026-03-30",
+      "units": 1551.7661,
+      "goalId": "marriage::Reyaansh Marriage",
+      "folioNumber": "31043789425"
+    },
+    {
+      "id": "ls-1775363792964",
+      "amc": "sbi",
+      "schemeCode": "150673",
+      "fundName": "SBI Nifty Midcap 150 Index Fund - Direct Plan - Growth",
+      "amount": 81400,
+      "dateOfInvestment": "2026-03-30",
+      "units": 4815.115,
+      "goalId": "marriage::Kid 2 Marriage",
+      "folioNumber": "49294752"
+    },
+    {
+      "id": "ls-1775363801828",
+      "amc": "sbi",
+      "schemeCode": "150673",
+      "fundName": "SBI Nifty Midcap 150 Index Fund - Direct Plan - Growth",
+      "amount": 107800,
+      "dateOfInvestment": "2026-03-30",
+      "units": 6376.7739,
+      "goalId": "marriage::Reyaansh Marriage",
+      "folioNumber": "49444218"
+    },
+    {
+      "id": "ls-1775364621498",
+      "amc": "axis",
+      "schemeCode": "147666",
+      "fundName": "Axis Nifty 100 Index Fund - Direct Plan - Growth Option",
+      "amount": 72500,
+      "dateOfInvestment": "2026-03-31",
+      "units": 3554.1655,
+      "goalId": "marriage::Reyaansh Marriage",
+      "folioNumber": "910224093235"
+    },
+    {
+      "id": "ls-1775364666457",
+      "amc": "parag",
+      "schemeCode": "122639",
+      "fundName": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth",
+      "amount": 96000,
+      "dateOfInvestment": "2026-04-02",
+      "units": 1109.6278,
+      "goalId": "marriage::Reyaansh Marriage",
+      "folioNumber": "19693271"
+    }
+  ],
+  "sipInvestments": [
+    {
+      "id": "sip-1775215535943",
+      "fundName": "Axis Midcap Fund - Direct Plan - Growth",
+      "amount": 3000,
+      "startDate": "2020-05-05",
+      "unitsTillNow": 3359.514,
+      "goalId": "graduation::Reyaansh Graduation",
+      "folioNumber": "910112043896",
+      "schemeCode": "120505",
+      "amc": "axis",
+      "isActive": true,
+      "endDate": "2025-03-01"
+    },
+    {
+      "id": "sip-1775364866938",
+      "amc": "axis",
+      "schemeCode": "120503",
+      "fundName": "Axis ELSS Tax Saver Fund - Direct Plan - Growth Option",
+      "amount": 10000,
+      "startDate": "2018-09-05",
+      "unitsTillNow": 11782.934,
+      "goalId": "fire",
+      "folioNumber": "91044079811",
+      "endDate": "2025-03-01"
+    },
+    {
+      "id": "sip-1775364976737",
+      "amc": "axis",
+      "schemeCode": "141925",
+      "fundName": "Axis Flexi Cap Fund - Direct Plan - Growth",
+      "amount": 3000,
+      "startDate": "2019-11-05",
+      "unitsTillNow": 11058,
+      "goalId": "fire",
+      "folioNumber": "91044079811",
+      "endDate": "2025-03-01"
+    },
+    {
+      "id": "sip-1775365032646",
+      "amc": "sbi",
+      "schemeCode": "119598",
+      "fundName": "SBI Large Cap FUND-DIRECT PLAN -GROWTH",
+      "amount": 2500,
+      "startDate": "2016-12-05",
+      "unitsTillNow": 5298.77,
+      "goalId": "fire",
+      "folioNumber": "16254612",
+      "isActive": true
+    },
+    {
+      "id": "sip-1775365185349",
+      "amc": "sbi",
+      "schemeCode": "119718",
+      "fundName": "SBI Flexicap Fund - DIRECT PLAN - Growth Option",
+      "amount": 2000,
+      "startDate": "2017-11-15",
+      "unitsTillNow": 2720.52,
+      "goalId": "fire",
+      "folioNumber": "16254612",
+      "endDate": "2025-03-01"
+    },
+    {
+      "id": "sip-1775365261296",
+      "amc": "sbi",
+      "schemeCode": "150673",
+      "fundName": "SBI Nifty Midcap 150 Index Fund - Direct Plan - Growth",
+      "amount": 5500,
+      "startDate": "2025-03-05",
+      "unitsTillNow": 10303.77,
+      "goalId": "fire",
+      "folioNumber": "16254612",
+      "isActive": true
+    },
+    {
+      "id": "sip-1775365327371",
+      "amc": "sbi",
+      "schemeCode": "125497",
+      "fundName": "SBI Small Cap Fund - Direct Plan - Growth",
+      "amount": 12500,
+      "startDate": "2025-03-05",
+      "unitsTillNow": 900.8,
+      "goalId": "fire",
+      "folioNumber": "16254612",
+      "isActive": true
+    },
+    {
+      "id": "sip-1775365364993",
+      "amc": "mirae asset",
+      "schemeCode": "118825",
+      "fundName": "Mirae Asset Large Cap Fund - Direct Plan - Growth",
+      "amount": 1500,
+      "startDate": "2019-03-05",
+      "unitsTillNow": 1610.234,
+      "goalId": "fire",
+      "folioNumber": "79910203866",
+      "endDate": "2025-03-01"
+    },
+    {
+      "id": "sip-1775365613748",
+      "amc": "nippon india",
+      "schemeCode": "103196",
+      "fundName": "Nippon India ELSS Tax Saver Fund-Growth Plan-Growth Option",
+      "amount": 2000,
+      "startDate": "2019-03-05",
+      "unitsTillNow": 2866.161,
+      "goalId": "fire",
+      "folioNumber": "499192451406",
+      "endDate": "2025-03-01"
+    }
+  ],
+  "otherAssets": {
+    "epf": {
+      "currentBalance": 3043000,
+      "monthlyContribution": 36928,
+      "yearsToContinue": 11
+    },
+    "nps": {
+      "currentBalance": 648303,
+      "yearlyContribution": 50000,
+      "yearsToContinue": 11
+    },
+    "goldGrams": 48.3223,
+    "silverGrams": 70.4059,
+    "emergencyFund": 1400000,
+    "otherSavings": 200000
+  }
+}

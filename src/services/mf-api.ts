@@ -52,8 +52,14 @@ function getAmcSearchTerms(amc: string): string[] {
   
   // Map of known AMC variations
   const amcMappings: Record<string, string[]> = {
-    "sbi": ["sbi", "sbi mutual", "sbi mutual fund", "state bank of india"],
-    "axis": ["axis", "axis mutual", "axis mutual fund"],
+    "sbi": ["sbi"],
+    "axis": ["axis"],
+    "nippon india": ["nippon india", "nippon"],
+    "nippon": ["nippon india", "nippon"],
+    "parag parikh": ["ppfas", "parag parikh"],
+    "ppfas": ["ppfas", "parag parikh"],
+    "mirae asset": ["mirae asset", "mirae"],
+    "mirae": ["mirae asset", "mirae"],
   }
   
   return amcMappings[normalized] || [normalized]
@@ -251,12 +257,79 @@ export function clearMfApiCache(): void {
 }
 
 /**
+ * Fetch NAV for a specific date.
+ * If NAV not available for that date, searches forward day by day until found.
+ * Returns the NAV and the actual date it was found for.
+ * Throws error if NAV not found after searching 30 days forward.
+ */
+export async function fetchNavForDate(
+  schemeCode: string,
+  targetDate: string, // YYYY-MM-DD format
+): Promise<{ nav: number; actualDate: string }> {
+  const maxSearchDays = 30
+  const startDate = new Date(targetDate)
+
+  for (let i = 0; i < maxSearchDays; i++) {
+    const searchDate = new Date(startDate)
+    searchDate.setDate(startDate.getDate() + i)
+
+    const formattedDate = searchDate.toISOString().split("T")[0] // YYYY-MM-DD
+
+    try {
+      // Fetch NAV history starting from target date
+      const response = await fetch(
+        `https://api.mfapi.in/mf/${schemeCode}?startDate=${formattedDate}&endDate=${formattedDate}`,
+      )
+
+      if (!response.ok) {
+        continue // Try next day
+      }
+
+      const data = await response.json()
+
+      // Check if we have NAV data for the exact date
+      // API returns date in DD-MM-YYYY format
+      if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
+        const navEntry = data.data[0]
+        if (navEntry.nav && navEntry.date) {
+          const nav = parseFloat(navEntry.nav)
+          if (!isNaN(nav)) {
+            // Convert DD-MM-YYYY back to YYYY-MM-DD for consistency
+            const [dd, mm, yyyy] = navEntry.date.split("-")
+            const actualDate = `${yyyy}-${mm}-${dd}`
+            return { nav, actualDate }
+          }
+        }
+      }
+    } catch {
+      // Continue to next day
+    }
+  }
+
+  throw new Error(`NAV not found for ${schemeCode} from ${targetDate} after searching ${maxSearchDays} days`)
+}
+
+/**
+ * Calculate units for lumpsum investment using NAV on purchase date.
+ * Searches forward for NAV if exact date not available.
+ */
+export async function calculateLumpsumUnits(
+  schemeCode: string,
+  amount: number,
+  purchaseDate: string, // YYYY-MM-DD
+): Promise<{ units: number; nav: number; actualDate: string }> {
+  const { nav, actualDate } = await fetchNavForDate(schemeCode, purchaseDate)
+  const units = Math.round((amount / nav) * 10000) / 10000 // Round to 4 decimal places
+  return { units, nav, actualDate }
+}
+
+/**
  * Check if scheme list is cached and valid (from today)
  */
 export function isSchemeListCached(): boolean {
   const cached = localStorage.getItem(SCHEME_LIST_CACHE_KEY)
   if (!cached) return false
-  
+
   try {
     const parsed: CachedData<MFScheme[]> = JSON.parse(cached)
     return isCacheValid(parsed.date)

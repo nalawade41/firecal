@@ -125,6 +125,8 @@ export interface GoalDetails {
 // ── Step 6: Lumpsum Investments ───────────────────────────
 export interface LumpsumEntry {
   id: string
+  amc: string
+  schemeCode: string
   fundName: string
   amount: number
   dateOfInvestment: string
@@ -136,12 +138,16 @@ export interface LumpsumEntry {
 // ── Step 7: SIP Investments ───────────────────────────────
 export interface SipEntry {
   id: string
+  amc: string
+  schemeCode: string
   fundName: string
   amount: number
   startDate: string
   unitsTillNow: number
   goalId: string
   folioNumber: string
+  isActive: boolean
+  endDate: string
 }
 
 // ── Step 8: Other Assets ──────────────────────────────────
