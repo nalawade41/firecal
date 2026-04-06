@@ -1,15 +1,5 @@
 import { RefreshCw } from "lucide-react"
-
-interface NetWorthTileProps {
-  nw: {
-    total: string
-    calculatedAt: string
-    missingNavCount: number
-    breakdown: { label: string; value: string }[]
-  }
-  onRefresh: () => void
-  isRefreshing: boolean
-}
+import type { NetWorthTileProps } from "./types/Dashboard.components.types"
 
 export function NetWorthTile({ nw, onRefresh, isRefreshing }: NetWorthTileProps) {
   const date = new Date(nw.calculatedAt)

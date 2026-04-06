@@ -7,9 +7,29 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatINR(value: number): string {
-  if (value >= 1_00_00_000) return `₹${(value / 1_00_00_000).toFixed(2)} Cr`
-  if (value >= 1_00_000) return `₹${(value / 1_00_000).toFixed(2)} L`
+  if (value === 0) return "₹0"
+  if (Math.abs(value) >= 1_00_00_000) return `₹${(value / 1_00_00_000).toFixed(2)} Cr`
+  if (Math.abs(value) >= 1_00_000) return `₹${(value / 1_00_000).toFixed(2)} L`
   return `₹${Math.round(value).toLocaleString("en-IN")}`
+}
+
+export function formatINROrDash(value: number): string {
+  if (value === 0) return "—"
+  return formatINR(value)
+}
+
+export function formatUnits(units: number): string {
+  if (units === 0) return "0"
+  if (units < 0.01) return units.toExponential(2)
+  return units.toFixed(3)
+}
+
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  })
 }
 
 // ── Goal option helpers for Lumpsum / SIP dropdowns ──────

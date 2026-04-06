@@ -1,7 +1,6 @@
 import type { OnboardingData } from "@/types/onboarding"
+import type { FireTargetType } from "@/types/dashboard"
 import { computeFireCorpus, computeFireCorpusFinite } from "./fire-corpus"
-
-export type FireTargetType = "finite" | "perpetual" | "suggested"
 
 export interface FireCalculationResult {
   targetType: FireTargetType

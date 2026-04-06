@@ -1,16 +1,15 @@
-import type { DashboardView } from "@/types/dashboard"
+import type { AssetAllocationTileProps } from "./types/Dashboard.components.types"
+import { useDonutChart } from "./hooks/useDonutChart"
 import { DonutChart } from "./DonutChart"
 
-interface AssetAllocationTileProps {
-  allocation: DashboardView["allocation"]
-}
-
 export function AssetAllocationTile({ allocation }: AssetAllocationTileProps) {
+  const { arcs } = useDonutChart(allocation.segments)
+
   return (
     <div className="rounded-xl bg-white/[0.05] backdrop-blur-sm border border-white/10 p-5">
       <p className="text-[11px] font-medium uppercase tracking-wider text-white/40 mb-4">Asset allocation</p>
       <div className="flex items-center gap-6">
-        <DonutChart segments={allocation.segments} centerLabel="Equity" centerValue={`${allocation.equityPercent}%`} />
+        <DonutChart arcs={arcs} centerLabel="Equity" centerValue={`${allocation.equityPercent}%`} />
         <div className="space-y-2 flex-1">
           {allocation.segments.map((seg) => (
             <div key={seg.label} className="flex items-center text-xs">

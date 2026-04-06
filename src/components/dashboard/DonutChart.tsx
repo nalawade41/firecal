@@ -1,40 +1,20 @@
-import type { AllocationSegment } from "@/types/dashboard"
+import type { DonutChartProps } from "./types/Dashboard.components.types"
 
-interface DonutChartProps {
-  segments: AllocationSegment[]
-  centerLabel: string
-  centerValue: string
-}
-
-export function DonutChart({ segments, centerLabel, centerValue }: DonutChartProps) {
-  const circumference = 2 * Math.PI * 36 // r=36
-  const startOffset = -circumference * 0.25 // start at top
-
-  const arcs = segments.reduce<{ seg: AllocationSegment; dash: number; gap: number; offset: number }[]>(
-    (acc, seg) => {
-      const dash = (seg.percent / 100) * circumference
-      const gap = circumference - dash
-      const prevEnd = acc.length > 0 ? acc[acc.length - 1].offset + acc[acc.length - 1].dash : startOffset
-      acc.push({ seg, dash, gap, offset: prevEnd })
-      return acc
-    },
-    [],
-  )
-
+export function DonutChart({ arcs, centerLabel, centerValue }: DonutChartProps) {
   return (
     <svg width="96" height="96" viewBox="0 0 96 96" className="shrink-0">
       <circle cx="48" cy="48" r="36" fill="none" stroke="rgba(74,102,84,.15)" strokeWidth="16" />
-      {arcs.map(({ seg, dash, gap, offset }) => (
+      {arcs.map((arc) => (
         <circle
-          key={seg.label}
+          key={arc.label}
           cx="48"
           cy="48"
           r="36"
           fill="none"
-          stroke={seg.color}
+          stroke={arc.color}
           strokeWidth="16"
-          strokeDasharray={`${dash} ${gap}`}
-          strokeDashoffset={-offset}
+          strokeDasharray={`${arc.dash} ${arc.gap}`}
+          strokeDashoffset={-arc.offset}
           transform="rotate(-90 48 48)"
         />
       ))}

@@ -243,33 +243,3 @@ export function calculateHarvestPlan(
   }
 }
 
-/**
- * Format currency in INR
- */
-export function formatINR(amount: number): string {
-  if (amount === 0) return "₹0"
-  if (Math.abs(amount) >= 10000000) return `₹${(amount / 10000000).toFixed(2)} Cr`
-  if (Math.abs(amount) >= 100000) return `₹${(amount / 100000).toFixed(2)} L`
-  if (Math.abs(amount) >= 1000) return `₹${(amount / 1000).toFixed(2)} K`
-  return `₹${amount.toFixed(2)}`
-}
-
-/**
- * Format number of units
- */
-export function formatUnits(units: number): string {
-  if (units === 0) return "0"
-  if (units < 0.01) return units.toExponential(2)
-  return units.toFixed(3)
-}
-
-/**
- * Format date to DD-MMM-YYYY
- */
-export function formatDate(date: Date): string {
-  return date.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  })
-}

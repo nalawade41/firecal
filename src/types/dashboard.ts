@@ -53,6 +53,8 @@ export interface NetWorthView {
   breakdown: { label: string; value: string }[]
 }
 
+export type FireTargetType = "finite" | "perpetual" | "suggested"
+
 export interface FireCorpusView {
   currentCorpus: string
   targetCorpus: string
@@ -61,6 +63,10 @@ export interface FireCorpusView {
   progressPercent: number
   gap: string
   reqCagr: string
+  targetSip: string
+  lumpsumNeeded: string
+  targetType: FireTargetType
+  onTargetChange: (type: FireTargetType) => void
 }
 
 export type SipStatus = "processed" | "pending" | "closed"
@@ -118,3 +124,4 @@ export interface DashboardView {
   allocation: AssetAllocationView
   goals: GoalCardView[]
 }
+

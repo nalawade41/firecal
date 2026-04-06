@@ -1,10 +1,10 @@
-const NAV_TABS = ["Dashboard", "Goals", "Transactions", "LTCG Harvest"] as const
+import { DASHBOARD_NAV_TABS } from "./constants/Dashboard.constants"
 
 export function DashboardNav() {
   return (
     <div className="flex items-center justify-center gap-2 flex-wrap">
       <div className="flex items-center gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
-        {NAV_TABS.map((tab) => (
+        {DASHBOARD_NAV_TABS.map((tab) => (
           <button
             key={tab}
             type="button"

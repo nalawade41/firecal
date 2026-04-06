@@ -1,5 +1,5 @@
 import type { TaxHarvestResults } from "@/types/tax-harvest"
-import { formatINR, formatUnits, formatDate } from "@/engine/tax-harvest/fifo-engine"
+import { formatINR, formatUnits, formatDate } from "@/lib/utils"
 import { AlertTriangle, CheckCircle, Info } from "lucide-react"
 
 interface TaxHarvestResultsViewProps {

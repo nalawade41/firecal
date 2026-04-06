@@ -1,27 +1,7 @@
-import { useState } from "react"
 import { Flame, GraduationCap, School, Heart, Home, Package, Star, X, Plus } from "lucide-react"
-import type { StepProps, GoalType, CustomGoalDefinition } from "@/types/onboarding"
-
-const MAX_CUSTOM_GOALS = 5
-
-const PRESET_GOALS: { type: GoalType; label: string; icon: string }[] = [
-  { type: "fire", label: "FIRE", icon: "flame" },
-  { type: "school-fees", label: "School Fees", icon: "school" },
-  { type: "graduation", label: "Graduation", icon: "graduation-cap" },
-  { type: "marriage", label: "Marriage", icon: "heart" },
-  { type: "house-down-payment", label: "House / Down Payment", icon: "home" },
-  { type: "whitegoods", label: "Whitegoods", icon: "package" },
-]
-
-const ICON_OPTIONS = [
-  { name: "Star", icon: "star" },
-  { name: "Heart", icon: "heart" },
-  { name: "Home", icon: "home" },
-  { name: "Flame", icon: "flame" },
-  { name: "Package", icon: "package" },
-  { name: "School", icon: "school" },
-  { name: "Graduation Cap", icon: "graduation-cap" },
-]
+import type { StepProps } from "@/types/onboarding"
+import { PRESET_GOALS, ICON_OPTIONS, MAX_CUSTOM_GOALS } from "./constants/Steps.constants"
+import { useStepGoalSelection } from "./hooks/useStepGoalSelection"
 
 function GoalIcon({ icon, className }: { icon: string; className?: string }) {
   const props = { className: className ?? "h-6 w-6" }
@@ -37,49 +17,15 @@ function GoalIcon({ icon, className }: { icon: string; className?: string }) {
   }
 }
 
-export function StepGoalSelection({ data, updateData }: StepProps) {
-  const [showCustomPopup, setShowCustomPopup] = useState(false)
-  const [customName, setCustomName] = useState("")
-  const [customIcon, setCustomIcon] = useState("star")
-
-  function toggleGoal(type: GoalType) {
-    const current = data.selectedGoals
-    const updated = current.includes(type)
-      ? current.filter((g) => g !== type)
-      : [...current, type]
-    updateData({ selectedGoals: updated })
-  }
-
-  function toggleCustomGoal(id: string) {
-    const def = data.customGoalDefinitions.find((d) => d.id === id)
-    if (!def) return
-    // Custom goals are always "selected" when they exist; toggling removes them
-    const updatedDefs = data.customGoalDefinitions.filter((d) => d.id !== id)
-    const hasCustom = updatedDefs.length > 0
-    updateData({
-      customGoalDefinitions: updatedDefs,
-      selectedGoals: hasCustom
-        ? data.selectedGoals
-        : data.selectedGoals.filter((g) => g !== "custom"),
-    })
-  }
-
-  function handleAddCustomGoal() {
-    if (!customName.trim()) return
-    const id = `custom-${Date.now()}`
-    const newDef: CustomGoalDefinition = { id, name: customName.trim(), icon: customIcon }
-    const alreadyHasCustom = data.selectedGoals.includes("custom")
-    updateData({
-      selectedGoals: alreadyHasCustom ? data.selectedGoals : [...data.selectedGoals, "custom"],
-      customGoalDefinitions: [...data.customGoalDefinitions, newDef],
-    })
-    setCustomName("")
-    setCustomIcon("star")
-    setShowCustomPopup(false)
-  }
-
-  const isSelected = (type: GoalType) => data.selectedGoals.includes(type)
-  const canAddCustom = data.customGoalDefinitions.length < MAX_CUSTOM_GOALS
+export function StepGoalSelection(props: StepProps) {
+  const { data } = props
+  const {
+    showCustomPopup, setShowCustomPopup,
+    customName, setCustomName,
+    customIcon, setCustomIcon,
+    toggleGoal, toggleCustomGoal, handleAddCustomGoal,
+    isSelected, canAddCustom,
+  } = useStepGoalSelection(props)
 
   return (
     <div className="space-y-4">

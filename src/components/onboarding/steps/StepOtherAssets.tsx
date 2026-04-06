@@ -1,12 +1,9 @@
-import type { StepProps, OtherAssets } from "@/types/onboarding"
+import type { StepProps } from "@/types/onboarding"
 import { NumberField } from "@/components/ui/number-field"
+import { useStepOtherAssets } from "./hooks/useStepOtherAssets"
 
-export function StepOtherAssets({ data, updateData }: StepProps) {
-  const assets = data.otherAssets
-
-  function update(patch: Partial<OtherAssets>) {
-    updateData({ otherAssets: { ...assets, ...patch } })
-  }
+export function StepOtherAssets(props: StepProps) {
+  const { assets, update } = useStepOtherAssets(props)
 
   return (
     <div className="space-y-6">

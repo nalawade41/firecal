@@ -1,10 +1,10 @@
 import type { StepProps } from "@/types/onboarding"
 import { NumberField } from "@/components/ui/number-field"
+import { useStepProfile } from "./hooks/useStepProfile"
 
-export function StepProfile({ data, updateData }: StepProps) {
-  function update<K extends keyof typeof data.profile>(key: K, value: typeof data.profile[K]) {
-    updateData({ profile: { ...data.profile, [key]: value } })
-  }
+export function StepProfile(props: StepProps) {
+  const { data } = props
+  const { update } = useStepProfile(props)
 
   return (
     <div className="space-y-4">

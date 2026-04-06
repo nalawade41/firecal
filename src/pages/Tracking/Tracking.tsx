@@ -1,31 +1,11 @@
-import { useState, useCallback } from "react"
 import { Upload, FileJson, PenLine } from "lucide-react"
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow"
-import { Dashboard } from "./Dashboard"
-import type { OnboardingData } from "@/types/onboarding"
-
-type View = "home" | "onboarding" | "dashboard"
-
-function loadOnboardingData(): OnboardingData | null {
-  try {
-    const raw = localStorage.getItem("firecal-onboarding")
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as OnboardingData
-    if (!parsed.selectedGoals || parsed.selectedGoals.length === 0) return null
-    return parsed
-  } catch {
-    return null
-  }
-}
+import { Dashboard } from "@/pages/Dashboard"
+import { useTracking } from "./hooks/useTracking"
+import { ONBOARDING_STORAGE_KEY } from "./constants/Tracking.constants"
 
 export function TrackingPage() {
-  const [saved, setSaved] = useState<OnboardingData | null>(() => loadOnboardingData())
-  const [view, setView] = useState<View>(saved ? "dashboard" : "home")
-
-  const handleFinishOnboarding = useCallback(() => {
-    setSaved(loadOnboardingData())
-    setView("dashboard")
-  }, [])
+  const { saved, view, setView, handleFinishOnboarding } = useTracking()
 
   if (view === "onboarding") {
     return (
@@ -47,7 +27,6 @@ export function TrackingPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      {/* Page heading */}
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-rose-900 tracking-tight">Portfolio Tracking</h2>
         <p className="text-base font-semibold text-rose-800">
@@ -56,9 +35,7 @@ export function TrackingPage() {
         </p>
       </div>
 
-      {/* Option cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Upload JSON */}
         <div className="rounded-xl border border-border/60 bg-white/70 backdrop-blur-sm p-6 flex flex-col items-center text-center gap-4 shadow-sm">
           <div className="h-12 w-12 rounded-lg bg-blue-50 flex items-center justify-center">
             <FileJson className="h-6 w-6 text-blue-600" />
@@ -79,7 +56,6 @@ export function TrackingPage() {
           </button>
         </div>
 
-        {/* Enter data manually */}
         <div className="rounded-xl border border-border/60 bg-white/70 backdrop-blur-sm p-6 flex flex-col items-center text-center gap-4 shadow-sm">
           <div className="h-12 w-12 rounded-lg bg-emerald-50 flex items-center justify-center">
             <PenLine className="h-6 w-6 text-emerald-600" />
@@ -93,7 +69,7 @@ export function TrackingPage() {
           </div>
           <button
             type="button"
-            onClick={() => { localStorage.removeItem("firecal-onboarding"); setView("onboarding") }}
+            onClick={() => { localStorage.removeItem(ONBOARDING_STORAGE_KEY); setView("onboarding") }}
             className="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
           >
             <PenLine className="h-4 w-4" />

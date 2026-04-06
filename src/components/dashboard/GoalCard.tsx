@@ -1,24 +1,5 @@
-import type { GoalCardView, GoalStatus } from "@/types/dashboard"
-
-const STATUS_STYLES: Record<GoalStatus, string> = {
-  "on-track": "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
-  monitor: "bg-amber-500/15 text-amber-400 border-amber-500/20",
-  behind: "bg-red-500/15 text-red-400 border-red-500/20",
-}
-const STATUS_LABEL: Record<GoalStatus, string> = {
-  "on-track": "On Track",
-  monitor: "Monitor",
-  behind: "Behind",
-}
-const PROGRESS_BAR: Record<GoalStatus, string> = {
-  "on-track": "bg-emerald-500",
-  monitor: "bg-amber-500",
-  behind: "bg-red-500",
-}
-
-interface GoalCardProps {
-  goal: GoalCardView
-}
+import type { GoalCardProps } from "./types/Dashboard.components.types"
+import { GOAL_STATUS_STYLES, GOAL_STATUS_LABEL, GOAL_PROGRESS_BAR } from "./constants/Dashboard.constants"
 
 export function GoalCard({ goal }: GoalCardProps) {
   return (
@@ -37,8 +18,8 @@ export function GoalCard({ goal }: GoalCardProps) {
           </div>
           <span className="text-[13px] font-medium text-white/90">{goal.name}</span>
         </div>
-        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${STATUS_STYLES[goal.status]}`}>
-          {STATUS_LABEL[goal.status]}
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${GOAL_STATUS_STYLES[goal.status]}`}>
+          {GOAL_STATUS_LABEL[goal.status]}
         </span>
       </div>
       {/* Target */}
@@ -48,7 +29,7 @@ export function GoalCard({ goal }: GoalCardProps) {
       {/* Progress bar */}
       <div className="h-1.5 rounded-full bg-white/10 mb-2">
         <div
-          className={`h-full rounded-full ${PROGRESS_BAR[goal.status]} transition-all`}
+          className={`h-full rounded-full ${GOAL_PROGRESS_BAR[goal.status]} transition-all`}
           style={{ width: `${goal.progressPercent}%` }}
         />
       </div>

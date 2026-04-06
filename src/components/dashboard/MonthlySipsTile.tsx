@@ -1,21 +1,7 @@
-"use client"
-
-import { useState } from "react"
-import type { DashboardView } from "@/types/dashboard"
+import type { MonthlySipsTileProps } from "./types/Dashboard.components.types"
 import { SipRow } from "./SipRow"
 
-interface MonthlySipsTileProps {
-  sips: DashboardView["sips"]
-}
-
-type FilterType = "active" | "closed"
-
-export function MonthlySipsTile({ sips }: MonthlySipsTileProps) {
-  const [filter, setFilter] = useState<FilterType>("active")
-
-  const displayItems = filter === "active" ? sips.items : sips.closedItems || []
-  const displayCount = filter === "active" ? sips.sipCount : sips.closedCount || 0
-  const displayTotal = filter === "active" ? sips.totalAmount : sips.closedTotalAmount || "₹0"
+export function MonthlySipsTile({ sips, filter, onFilterChange, displayItems, displayCount, displayTotal }: MonthlySipsTileProps) {
   return (
     <div className="rounded-xl bg-white/[0.05] backdrop-blur-sm border border-white/10 p-5">
       <div className="flex items-center justify-between mb-3">
@@ -31,7 +17,7 @@ export function MonthlySipsTile({ sips }: MonthlySipsTileProps) {
       <div className="flex items-center gap-2 mb-3">
         <button
           type="button"
-          onClick={() => setFilter("active")}
+          onClick={() => onFilterChange("active")}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
             filter === "active"
               ? "bg-emerald-600 text-white"
@@ -42,7 +28,7 @@ export function MonthlySipsTile({ sips }: MonthlySipsTileProps) {
         </button>
         <button
           type="button"
-          onClick={() => setFilter("closed")}
+          onClick={() => onFilterChange("closed")}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
             filter === "closed"
               ? "bg-emerald-600 text-white"

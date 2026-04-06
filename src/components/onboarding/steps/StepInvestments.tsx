@@ -1,10 +1,10 @@
 import type { StepProps } from "@/types/onboarding"
 import { NumberField } from "@/components/ui/number-field"
+import { useStepInvestments } from "./hooks/useStepInvestments"
 
-export function StepInvestments({ data, updateData }: StepProps) {
-  function update<K extends keyof typeof data.investments>(key: K, value: typeof data.investments[K]) {
-    updateData({ investments: { ...data.investments, [key]: value } })
-  }
+export function StepInvestments(props: StepProps) {
+  const { data } = props
+  const { update } = useStepInvestments(props)
 
   return (
     <div className="space-y-4">

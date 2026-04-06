@@ -1,5 +1,6 @@
 import { Download } from "lucide-react"
 import type { StepProps } from "@/types/onboarding"
+import { useStepConfirmation } from "./hooks/useStepConfirmation"
 
 function SummaryRow({ label, value }: { label: string; value: string | number }) {
   return (
@@ -10,35 +11,9 @@ function SummaryRow({ label, value }: { label: string; value: string | number })
   )
 }
 
-function downloadJSON(data: StepProps["data"]) {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = `firecal-plan-${new Date().toISOString().slice(0, 10)}.json`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
-
-export function StepConfirmation({ data }: StepProps) {
-  const goalNames = data.selectedGoals
-    .filter((g) => g !== "custom")
-    .map((g) => {
-      const map: Record<string, string> = {
-        fire: "FIRE",
-        "school-fees": "School Fees",
-        graduation: "Graduation",
-        marriage: "Marriage",
-        "house-down-payment": "House / Down Payment",
-        whitegoods: "Whitegoods",
-      }
-      return map[g] ?? g
-    })
-
-  const customNames = data.customGoalDefinitions.map((d) => d.name)
-  const allGoalNames = [...goalNames, ...customNames]
+export function StepConfirmation(props: StepProps) {
+  const { data } = props
+  const { allGoalNames, downloadJSON } = useStepConfirmation(props)
 
   return (
     <div className="space-y-6">
@@ -87,7 +62,7 @@ export function StepConfirmation({ data }: StepProps) {
         </div>
         <button
           type="button"
-          onClick={() => downloadJSON(data)}
+          onClick={() => downloadJSON()}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
         >
           <Download className="h-4 w-4" />
