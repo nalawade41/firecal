@@ -1,15 +1,11 @@
-export { calculateFire } from "./calculator"
-export { generateTimeline } from "./timeline"
-export { computeEducationForYear } from "./education"
-export { computeMarriageForYear } from "./marriage"
-export { computeWhitegoodsForYear } from "./whitegoods"
-export { computeTravelForYear } from "./travel"
-export { computeHealthcareForYear } from "./healthcare"
-export { computeLivingExpenseForYear } from "./living-expense"
-export { computePortfolioForYear } from "./portfolio"
-export { getEquityAllocation } from "./glidepath"
-export { computeMonthlySip } from "./sip"
-export { computeFireCorpus, computeFireCorpusFinite, computeLumpsumNeeded, computeSipNeeded } from "./tracking/fire-corpus"
-export { computeSchoolFeeCorpus, verifySchoolFeeCorpus } from "./school-fee-corpus"
-export { computeGraduationCorpus } from "./graduation-corpus"
-export { computeMarriageCorpus } from "./marriage-corpus"
+// Core FIRE simulation
+export { calculateFire, generateTimeline, computePortfolioForYear } from "./simulation"
+
+// Financial math
+export { computeMonthlySip, getEquityAllocation, computeLumpsumNeeded, computeSipNeeded } from "./math"
+
+// Yearly expense calculators
+export { computeEducationForYear, computeMarriageForYear, computeWhitegoodsForYear, computeTravelForYear, computeHealthcareForYear, computeLivingExpenseForYear } from "./expenses"
+
+// Goal corpus calculators
+export { computeFireCorpus, computeFireCorpusFinite, computeGraduationCorpus, computeMarriageCorpus, computeSchoolFeeCorpus, verifySchoolFeeCorpus } from "./goals"

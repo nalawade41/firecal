@@ -2,9 +2,7 @@
  * Mutual Fund API Service
  * Handles fetching and caching of scheme lists and NAV data from mfapi.in
  */
-
-const SCHEME_LIST_CACHE_KEY = "mf_scheme_list"
-const NAV_CACHE_KEY_PREFIX = "mf_nav_"
+import { readCache, writeCache, removeKey, removeByPrefix, MF_SCHEME_LIST_KEY, MF_NAV_PREFIX, CACHE_TTL_24H } from "@/store"
 
 export interface MFScheme {
   schemeCode: string
@@ -12,28 +10,6 @@ export interface MFScheme {
   fundHouse: string
 }
 
-interface CachedData<T> {
-  data: T
-  date: string // YYYY-MM-DD format
-}
-
-/**
- * Get current date string in YYYY-MM-DD format
- */
-function getCurrentDate(): string {
-  return new Date().toISOString().split("T")[0]
-}
-
-/**
- * Check if cache date is from today
- */
-function isCacheValid(cacheDate: string): boolean {
-  return cacheDate === getCurrentDate()
-}
-
-/**
- * Normalize AMC name for consistent matching
- */
 function normalizeAmcName(name: string): string {
   return name
     .toLowerCase()
@@ -44,13 +20,9 @@ function normalizeAmcName(name: string): string {
     .trim()
 }
 
-/**
- * Map internal AMC key to API AMC names
- */
 function getAmcSearchTerms(amc: string): string[] {
   const normalized = normalizeAmcName(amc)
-  
-  // Map of known AMC variations
+
   const amcMappings: Record<string, string[]> = {
     "sbi": ["sbi"],
     "axis": ["axis"],
@@ -61,69 +33,13 @@ function getAmcSearchTerms(amc: string): string[] {
     "mirae asset": ["mirae asset", "mirae"],
     "mirae": ["mirae asset", "mirae"],
   }
-  
+
   return amcMappings[normalized] || [normalized]
 }
 
-/**
- * Fetch full scheme list from API or cache
- */
-export async function fetchSchemeList(): Promise<MFScheme[]> {
-  // Check cache first
-  const cached = localStorage.getItem(SCHEME_LIST_CACHE_KEY)
-  if (cached) {
-    try {
-      const parsed: CachedData<MFScheme[]> = JSON.parse(cached)
-      if (isCacheValid(parsed.date)) {
-        return parsed.data
-      }
-    } catch {
-      // Invalid cache, continue to fetch
-    }
-  }
-  
-  // Fetch from API
-  const response = await fetch("https://api.mfapi.in/mf?limit=50000&offset=0")
-  if (!response.ok) {
-    throw new Error(`Failed to fetch scheme list: ${response.status}`)
-  }
-  
-  const data = await response.json()
-  
-  if (!data || !Array.isArray(data)) {
-    throw new Error("Invalid scheme list response")
-  }
-  
-  // Transform and extract AMC from scheme name
-  const schemes: MFScheme[] = data.map((item: { schemeCode: string; schemeName: string }) => {
-    const schemeName = item.schemeName || ""
-    // Extract AMC from scheme name (usually first part before the hyphen or first few words)
-    const fundHouse = extractFundHouse(schemeName)
-    
-    return {
-      schemeCode: String(item.schemeCode),
-      schemeName: schemeName,
-      fundHouse: fundHouse,
-    }
-  })
-  
-  // Cache the result
-  const cacheData: CachedData<MFScheme[]> = {
-    data: schemes,
-    date: getCurrentDate(),
-  }
-  localStorage.setItem(SCHEME_LIST_CACHE_KEY, JSON.stringify(cacheData))
-  
-  return schemes
-}
-
-/**
- * Extract fund house/AMC name from scheme name
- */
 function extractFundHouse(schemeName: string): string {
   const normalized = schemeName.toLowerCase()
-  
-  // Known AMC patterns in scheme names
+
   const amcPatterns = [
     { pattern: /^(sbi\s+)/i, name: "sbi" },
     { pattern: /^(hdfc\s+)/i, name: "hdfc" },
@@ -164,107 +80,90 @@ function extractFundHouse(schemeName: string): string {
     { pattern: /^(whiteoak\s+)/i, name: "whiteoak" },
     { pattern: /^(zerodha\s+)/i, name: "zerodha" },
   ]
-  
+
   for (const { pattern, name } of amcPatterns) {
     if (pattern.test(normalized)) {
       return name
     }
   }
-  
-  // Fallback: extract first word
+
   const firstWord = normalized.split(/\s+/)[0]
   return firstWord || "unknown"
 }
 
-/**
- * Filter schemes by AMC
- */
+export async function fetchSchemeList(): Promise<MFScheme[]> {
+  const cached = readCache<MFScheme[]>(MF_SCHEME_LIST_KEY, CACHE_TTL_24H)
+  if (cached) return cached
+
+  const response = await fetch("https://api.mfapi.in/mf?limit=50000&offset=0")
+  if (!response.ok) {
+    throw new Error(`Failed to fetch scheme list: ${response.status}`)
+  }
+
+  const data = await response.json()
+
+  if (!data || !Array.isArray(data)) {
+    throw new Error("Invalid scheme list response")
+  }
+
+  const schemes: MFScheme[] = data.map((item: { schemeCode: string; schemeName: string }) => ({
+    schemeCode: String(item.schemeCode),
+    schemeName: item.schemeName || "",
+    fundHouse: extractFundHouse(item.schemeName || ""),
+  }))
+
+  writeCache(MF_SCHEME_LIST_KEY, schemes)
+
+  return schemes
+}
+
 export function filterSchemesByAmc(schemes: MFScheme[], amc: string): MFScheme[] {
   const searchTerms = getAmcSearchTerms(amc)
-  
+
   return schemes.filter(scheme => {
     const schemeFundHouse = normalizeAmcName(scheme.fundHouse)
     const schemeName = normalizeAmcName(scheme.schemeName)
-    
-    return searchTerms.some(term => 
+
+    return searchTerms.some(term =>
       schemeFundHouse.includes(term) || schemeName.includes(term)
     )
   })
 }
 
-/**
- * Fetch latest NAV for a scheme
- */
 export async function fetchLatestNav(schemeCode: string): Promise<number> {
-  // Check cache first
-  const cacheKey = `${NAV_CACHE_KEY_PREFIX}${schemeCode}`
-  const cached = localStorage.getItem(cacheKey)
-  
-  if (cached) {
-    try {
-      const parsed: CachedData<number> = JSON.parse(cached)
-      if (isCacheValid(parsed.date)) {
-        return parsed.data
-      }
-    } catch {
-      // Invalid cache, continue to fetch
-    }
-  }
-  
-  // Fetch from API
+  const cacheKey = `${MF_NAV_PREFIX}${schemeCode}`
+  const cached = readCache<number>(cacheKey, CACHE_TTL_24H)
+  if (cached !== null) return cached
+
   const response = await fetch(`https://api.mfapi.in/mf/${schemeCode}/latest`)
   if (!response.ok) {
     throw new Error(`Failed to fetch NAV: ${response.status}`)
   }
-  
+
   const data = await response.json()
-  
-  // Parse NAV from response structure: data.data[0].nav
-  if (!data || !data.data || !Array.isArray(data.data) || data.data.length === 0 || !data.data[0].nav) {
+
+  if (!data?.data || !Array.isArray(data.data) || data.data.length === 0 || !data.data[0].nav) {
     throw new Error("Invalid NAV response structure")
   }
-  
+
   const nav = parseFloat(data.data[0].nav)
-  
   if (isNaN(nav)) {
     throw new Error("Invalid NAV value")
   }
-  
-  // Cache the result
-  const cacheData: CachedData<number> = {
-    data: nav,
-    date: getCurrentDate(),
-  }
-  localStorage.setItem(cacheKey, JSON.stringify(cacheData))
-  
+
+  writeCache(cacheKey, nav)
+
   return nav
 }
 
-/**
- * Clear all MF API caches
- */
 export function clearMfApiCache(): void {
-  // Clear scheme list cache
-  localStorage.removeItem(SCHEME_LIST_CACHE_KEY)
-  
-  // Clear all NAV caches
-  for (let i = localStorage.length - 1; i >= 0; i--) {
-    const key = localStorage.key(i)
-    if (key && key.startsWith(NAV_CACHE_KEY_PREFIX)) {
-      localStorage.removeItem(key)
-    }
-  }
+  removeKey(MF_SCHEME_LIST_KEY)
+  removeByPrefix(MF_NAV_PREFIX)
 }
 
-/**
- * Fetch NAV for a specific date.
- * If NAV not available for that date, searches forward day by day until found.
- * Returns the NAV and the actual date it was found for.
- * Throws error if NAV not found after searching 30 days forward.
- */
 export async function fetchNavForDate(
   schemeCode: string,
-  targetDate: string, // YYYY-MM-DD format
+  targetDate: string,
 ): Promise<{ nav: number; actualDate: string }> {
   const maxSearchDays = 30
   const startDate = new Date(targetDate)
@@ -272,29 +171,22 @@ export async function fetchNavForDate(
   for (let i = 0; i < maxSearchDays; i++) {
     const searchDate = new Date(startDate)
     searchDate.setDate(startDate.getDate() + i)
-
-    const formattedDate = searchDate.toISOString().split("T")[0] // YYYY-MM-DD
+    const formattedDate = searchDate.toISOString().split("T")[0]
 
     try {
-      // Fetch NAV history starting from target date
       const response = await fetch(
         `https://api.mfapi.in/mf/${schemeCode}?startDate=${formattedDate}&endDate=${formattedDate}`,
       )
 
-      if (!response.ok) {
-        continue // Try next day
-      }
+      if (!response.ok) continue
 
       const data = await response.json()
 
-      // Check if we have NAV data for the exact date
-      // API returns date in DD-MM-YYYY format
       if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
         const navEntry = data.data[0]
         if (navEntry.nav && navEntry.date) {
           const nav = parseFloat(navEntry.nav)
           if (!isNaN(nav)) {
-            // Convert DD-MM-YYYY back to YYYY-MM-DD for consistency
             const [dd, mm, yyyy] = navEntry.date.split("-")
             const actualDate = `${yyyy}-${mm}-${dd}`
             return { nav, actualDate }
@@ -309,31 +201,16 @@ export async function fetchNavForDate(
   throw new Error(`NAV not found for ${schemeCode} from ${targetDate} after searching ${maxSearchDays} days`)
 }
 
-/**
- * Calculate units for lumpsum investment using NAV on purchase date.
- * Searches forward for NAV if exact date not available.
- */
 export async function calculateLumpsumUnits(
   schemeCode: string,
   amount: number,
-  purchaseDate: string, // YYYY-MM-DD
+  purchaseDate: string,
 ): Promise<{ units: number; nav: number; actualDate: string }> {
   const { nav, actualDate } = await fetchNavForDate(schemeCode, purchaseDate)
-  const units = Math.round((amount / nav) * 10000) / 10000 // Round to 4 decimal places
+  const units = Math.round((amount / nav) * 10000) / 10000
   return { units, nav, actualDate }
 }
 
-/**
- * Check if scheme list is cached and valid (from today)
- */
 export function isSchemeListCached(): boolean {
-  const cached = localStorage.getItem(SCHEME_LIST_CACHE_KEY)
-  if (!cached) return false
-
-  try {
-    const parsed: CachedData<MFScheme[]> = JSON.parse(cached)
-    return isCacheValid(parsed.date)
-  } catch {
-    return false
-  }
+  return readCache<MFScheme[]>(MF_SCHEME_LIST_KEY, CACHE_TTL_24H) !== null
 }

@@ -1,5 +1,5 @@
 import type { OnboardingData, SipEntry } from "@/types/onboarding"
-import { formatINR } from "@/lib/utils"
+import { formatINR } from "@/utils"
 
 export interface SipDashboardItem {
   label: string // Short fund name (first part before first -)

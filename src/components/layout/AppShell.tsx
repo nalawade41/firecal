@@ -13,7 +13,7 @@ export function AppShell({ children }: AppShellProps) {
 
   function navClass(path: string, activeColor: string) {
     return `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-      activePath === path ? activeColor : "text-muted-foreground hover:bg-slate-100"
+      activePath === path ? activeColor : "text-[var(--wt-ink2)] hover:bg-[var(--wt-foam)]"
     }`
   }
 

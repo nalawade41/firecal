@@ -7,4 +7,5 @@ export interface UseTrackingReturn {
   view: TrackingView
   setView: (view: TrackingView) => void
   handleFinishOnboarding: () => void
+  handleStartFreshSetup: () => void
 }

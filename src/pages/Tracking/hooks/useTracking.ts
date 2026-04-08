@@ -1,18 +1,12 @@
 import { useState, useCallback } from "react"
 import type { OnboardingData } from "@/types/onboarding"
 import type { TrackingView, UseTrackingReturn } from "../types/Tracking.types"
-import { ONBOARDING_STORAGE_KEY } from "../constants/Tracking.constants"
+import { readJSON, removeKey, ONBOARDING_KEY } from "@/store"
 
 function loadOnboardingData(): OnboardingData | null {
-  try {
-    const raw = localStorage.getItem(ONBOARDING_STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as OnboardingData
-    if (!parsed.selectedGoals || parsed.selectedGoals.length === 0) return null
-    return parsed
-  } catch {
-    return null
-  }
+  const parsed = readJSON<OnboardingData>(ONBOARDING_KEY)
+  if (!parsed?.selectedGoals || parsed.selectedGoals.length === 0) return null
+  return parsed
 }
 
 export function useTracking(): UseTrackingReturn {
@@ -24,5 +18,10 @@ export function useTracking(): UseTrackingReturn {
     setView("dashboard")
   }, [])
 
-  return { saved, view, setView, handleFinishOnboarding }
+  const handleStartFreshSetup = useCallback(() => {
+    removeKey(ONBOARDING_KEY)
+    setView("onboarding")
+  }, [])
+
+  return { saved, view, setView, handleFinishOnboarding, handleStartFreshSetup }
 }

@@ -1,1 +1,0 @@
-export { FireCalculatorPage } from "./FireCalculator"

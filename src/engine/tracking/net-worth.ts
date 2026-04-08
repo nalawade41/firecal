@@ -6,57 +6,31 @@
 import type { OnboardingData, LumpsumEntry, SipEntry, OtherAssets } from "@/types/onboarding"
 import { fetchLatestNav } from "@/services/mf-api"
 import { fetchMetalPrices } from "@/services/metal-api"
+import { readCache, MF_NAV_PREFIX, METAL_GOLD_KEY, METAL_SILVER_KEY, CACHE_TTL_24H } from "@/store"
 
 export interface NetWorthResult {
   total: number
   mfPortfolio: number
   epfNps: number
-  preciousMetals: number // Gold + Silver
-  liquid: number // Emergency + Savings
+  preciousMetals: number
+  liquid: number
 }
 
 export interface NetWorthCalculation extends NetWorthResult {
   missingNavCount: number
   missingNavFunds: string[]
   missingMetalPrices: string[]
-  calculatedAt: string // ISO timestamp
+  calculatedAt: string
 }
 
-/**
- * Read cached NAV from localStorage (same key format as mf-api.ts)
- */
 function getCachedNav(schemeCode: string): number | null {
-  const cacheKey = `mf_nav_${schemeCode}`
-  const raw = localStorage.getItem(cacheKey)
-  if (!raw) return null
-  try {
-    const parsed: { data: number; date: string } = JSON.parse(raw)
-    const today = new Date().toISOString().split("T")[0]
-    return parsed.date === today ? parsed.data : null
-  } catch {
-    return null
-  }
+  return readCache<number>(`${MF_NAV_PREFIX}${schemeCode}`, CACHE_TTL_24H)
 }
 
-/**
- * Read cached metal price from localStorage (same key format as metal-api.ts)
- */
-function getCachedMetalPrice(key: "metal_gold_inr" | "metal_silver_inr"): number | null {
-  const raw = localStorage.getItem(key)
-  if (!raw) return null
-  try {
-    const parsed: { pricePerGram: number; date: string } = JSON.parse(raw)
-    const today = new Date().toISOString().split("T")[0]
-    return parsed.date === today ? parsed.pricePerGram : null
-  } catch {
-    return null
-  }
+function getCachedMetalPrice(key: string): number | null {
+  return readCache<number>(key, CACHE_TTL_24H)
 }
 
-/**
- * Calculate MF portfolio value from lumpsum and SIP entries using cached NAVs.
- * Missing NAVs are treated as 0 (will not contribute to total).
- */
 function calculateMFValue(
   lumpsum: LumpsumEntry[],
   sip: SipEntry[],
@@ -87,17 +61,14 @@ function calculateMFValue(
   return { total, withMissingNav: missingNav }
 }
 
-/**
- * Calculate gold and silver value from grams using cached prices.
- */
 function calculatePreciousMetalsValue(assets: OtherAssets): {
   gold: number
   silver: number
   total: number
   missing: string[]
 } {
-  const goldPrice = getCachedMetalPrice("metal_gold_inr")
-  const silverPrice = getCachedMetalPrice("metal_silver_inr")
+  const goldPrice = getCachedMetalPrice(METAL_GOLD_KEY)
+  const silverPrice = getCachedMetalPrice(METAL_SILVER_KEY)
   const missing: string[] = []
 
   let gold = 0
@@ -122,10 +93,6 @@ function calculatePreciousMetalsValue(assets: OtherAssets): {
   return { gold, silver, total: gold + silver, missing }
 }
 
-/**
- * Calculate total net worth from onboarding data.
- * Uses cached NAVs and metal prices; missing data is treated as 0.
- */
 export function calculateNetWorth(data: OnboardingData): NetWorthCalculation {
   const mf = calculateMFValue(data.lumpsumInvestments, data.sipInvestments)
   const metals = calculatePreciousMetalsValue(data.otherAssets)
@@ -148,16 +115,11 @@ export function calculateNetWorth(data: OnboardingData): NetWorthCalculation {
   }
 }
 
-/**
- * Refresh all NAVs and metal prices, then recalculate.
- * Returns updated calculation and any errors encountered.
- */
 export async function refreshNetWorthData(
   data: OnboardingData,
 ): Promise<{ calculation: NetWorthCalculation; errors: string[] }> {
   const errors: string[] = []
 
-  // Collect unique scheme codes from lumpsum and SIP
   const schemeCodes = new Set<string>()
   for (const entry of data.lumpsumInvestments) {
     if (entry.schemeCode) schemeCodes.add(entry.schemeCode)
@@ -166,7 +128,6 @@ export async function refreshNetWorthData(
     if (entry.schemeCode) schemeCodes.add(entry.schemeCode)
   }
 
-  // Re-fetch NAVs for all schemes in parallel
   await Promise.all(
     Array.from(schemeCodes).map(async (code) => {
       try {
@@ -177,14 +138,12 @@ export async function refreshNetWorthData(
     }),
   )
 
-  // Re-fetch metal prices
   try {
     await fetchMetalPrices()
   } catch {
     errors.push("Failed to refresh metal prices")
   }
 
-  // Recalculate with fresh data
   const calculation = calculateNetWorth(data)
   return { calculation, errors }
 }

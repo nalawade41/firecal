@@ -1,4 +1,5 @@
 import type { GoalType } from "./onboarding"
+import type { PortfolioAllocationResult } from "./asset-allocation"
 
 // ── Computed summaries (from engine) ─────────────────────
 export interface GoalSummary {
@@ -122,6 +123,7 @@ export interface DashboardView {
   fire: FireCorpusView | null
   sips: MonthlySipsView
   allocation: AssetAllocationView
+  allocationDetail: PortfolioAllocationResult | null
   goals: GoalCardView[]
 }
 

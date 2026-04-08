@@ -1,0 +1,1252 @@
+[
+  {
+    "isin": "INE002A01018",
+    "company_name": "Reliance Industries Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE040A01034",
+    "company_name": "HDFC Bank Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE467B01029",
+    "company_name": "Tata Consultancy Services Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE397D01024",
+    "company_name": "Bharti Airtel Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE090A01021",
+    "company_name": "ICICI Bank Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE009A01021",
+    "company_name": "Infosys Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE062A01020",
+    "company_name": "State Bank Of India",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE030A01027",
+    "company_name": "Hindustan Unilever Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE296A01032",
+    "company_name": "Bajaj Finance Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE154A01025",
+    "company_name": "ITC Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE0J1Y01017",
+    "company_name": "LIFE INSURANCE CORPORATION OF INDIA",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE018A01030",
+    "company_name": "Larsen & Toubro Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE860A01027",
+    "company_name": "HCL Technologies Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE044A01036",
+    "company_name": "Sun Pharmaceutical Industries Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE237A01028",
+    "company_name": "Kotak Mahindra Bank Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE585B01010",
+    "company_name": "Maruti Suzuki India Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE101A01026",
+    "company_name": "Mahindra & Mahindra Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE238A01034",
+    "company_name": "AXIS Bank Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE481G01011",
+    "company_name": "UltraTech Cement Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE733E01010",
+    "company_name": "NTPC Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE213A01029",
+    "company_name": "Oil And Natural Gas Corporation Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE918I01026",
+    "company_name": "Bajaj Finserv Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE280A01028",
+    "company_name": "Titan Company Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE075A01022",
+    "company_name": "Wipro Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE066F01020",
+    "company_name": "Hindustan Aeronautics Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE423A01024",
+    "company_name": "Adani Enterprises Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE752E01010",
+    "company_name": "POWER GRID CORPORATION OF INDIA LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE742F01042",
+    "company_name": "Adani Ports and Special Economic Zone Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE192R01011",
+    "company_name": "Avenue Supermarts Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE155A01022",
+    "company_name": "Tata Motors Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE019A01038",
+    "company_name": "JSW Steel Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE522F01014",
+    "company_name": "Coal India Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE917I01010",
+    "company_name": "Bajaj Auto Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE263A01024",
+    "company_name": "Bharat Electronics Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE758T01015",
+    "company_name": "Eternal Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE239A01024",
+    "company_name": "Nestle India Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE021A01026",
+    "company_name": "Asian Paints Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE814H01011",
+    "company_name": "Adani Power Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE849A01020",
+    "company_name": "Trent Ltd [Lakme Ltd]",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE646L01027",
+    "company_name": "InterGlobe Aviation Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE242A01010",
+    "company_name": "Indian Oil Corporation Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE267A01025",
+    "company_name": "Hindustan Zinc Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE271C01023",
+    "company_name": "DLF LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE081A01020",
+    "company_name": "TATA STEEL LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE200M01039",
+    "company_name": "Varun Beverages Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE053F01010",
+    "company_name": "Indian Railway Finance Corporation",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE047A01021",
+    "company_name": "Grasim Industries Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE205A01025",
+    "company_name": "Vedanta Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE758E01017",
+    "company_name": "Jio Financial Services Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE361B01024",
+    "company_name": "Divi's Laboratories Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE123W01016",
+    "company_name": "SBI Life Insurance Company Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE669C01036",
+    "company_name": "Tech Mahindra Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE214T01019",
+    "company_name": "LTIMindtree Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE364U01010",
+    "company_name": "Adani Green Energy Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE318A01026",
+    "company_name": "Pidilite Industries Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE795G01014",
+    "company_name": "HDFC LIFE INSURANCE COMPANY LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE0V6F01027",
+    "company_name": "HYUNDAI MOTOR INDIA LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE066A01021",
+    "company_name": "Eicher Motors Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE038A01020",
+    "company_name": "Hindalco Industries Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE118A01012",
+    "company_name": "Bajaj Holdings & Investment Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE134E01011",
+    "company_name": "Power Finance Corporation Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE079A01024",
+    "company_name": "Ambuja Cements Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE670K01029",
+    "company_name": "Macrotech Developers Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE029A01011",
+    "company_name": "Bharat Petroleum Corpn. Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE216A01030",
+    "company_name": "Britannia Industries Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE121A01024",
+    "company_name": "Cholamandalam Investment and Finance Company Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE117A01022",
+    "company_name": "ABB India Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE494B01023",
+    "company_name": "TVS Motor Company Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE245A01021",
+    "company_name": "Tata Power Co. Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE059A01026",
+    "company_name": "Cipla Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE102D01028",
+    "company_name": "Godrej Consumer Products Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE028A01039",
+    "company_name": "Bank Of Baroda",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE129A01019",
+    "company_name": "Gail (India) Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE721A01047",
+    "company_name": "Shriram Finance Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE160A01022",
+    "company_name": "Punjab National Bank",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE020B01018",
+    "company_name": "REC LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE053A01029",
+    "company_name": "Indian Hotels Co. Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE003A01024",
+    "company_name": "Siemens Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE343H01029",
+    "company_name": "Solar Industries India Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE685A01028",
+    "company_name": "Torrent Pharmaceuticals Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE249Z01020",
+    "company_name": "Mazagon Dock Shipbuilders Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE027H01010",
+    "company_name": "Max Healthcare Institute Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE854D01024",
+    "company_name": "United Spirits Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE070A01015",
+    "company_name": "Shree Cements Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE192A01025",
+    "company_name": "TATA CONSUMER PRODUCTS LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE089A01031",
+    "company_name": "Dr. Reddy's Laboratories Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE634S01028",
+    "company_name": "Mankind Pharma Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE377Y01014",
+    "company_name": "Bajaj Housing Finance Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE1NPP01017",
+    "company_name": "Siemens Energy India Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE931S01010",
+    "company_name": "Adani Energy Solutions Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE775A01035",
+    "company_name": "Samvardhana Motherson International Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE067A01029",
+    "company_name": "CG Power and Industrial Solutions Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE437A01024",
+    "company_name": "Apollo Hospitals Enterprises Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE176B01034",
+    "company_name": "Havells India Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE121J01017",
+    "company_name": "INDUS TOWERS LIMITED",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE692A01016",
+    "company_name": "Union Bank of India",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE663F01032",
+    "company_name": "Info Edge(India) Ltd.",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE326A01037",
+    "company_name": "Lupin Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE010B01027",
+    "company_name": "Zydus Lifesciences Limited",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE749A01030",
+    "company_name": "Jindal Steel & Power Ltd",
+    "cap_category": "large_cap"
+  },
+  {
+    "isin": "INE127D01025",
+    "company_name": "HDFC Asset Management Company Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE765G01017",
+    "company_name": "ICICI Lombard General Insurance Company Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE414G01012",
+    "company_name": "MUTHOOT FINANCE LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE935N01020",
+    "company_name": "Dixon Technologies (India) Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE0ONG01011",
+    "company_name": "NTPC GREEN ENERGY LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE121E01018",
+    "company_name": "JSW Energy Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE476A01022",
+    "company_name": "Canara Bank",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE008A01015",
+    "company_name": "IDBI Bank Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE262H01021",
+    "company_name": "Persistent Systems Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE016A01026",
+    "company_name": "Dabur India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE726G01019",
+    "company_name": "ICICI Prudential Life Insurance Company Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE323A01026",
+    "company_name": "Bosch Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE196A01026",
+    "company_name": "Marico Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE455K01017",
+    "company_name": "Polycab India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE00H001014",
+    "company_name": "SWIGGY LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE647A01010",
+    "company_name": "SRF Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE776C01039",
+    "company_name": "GMR Airports Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE118H01025",
+    "company_name": "BSE Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE298A01020",
+    "company_name": "Cummins India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE848E01016",
+    "company_name": "NHPC Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE018E01016",
+    "company_name": "SBI CARDS AND PAYMENT SERVICES LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE565A01014",
+    "company_name": "Indian Overseas Bank",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE158A01026",
+    "company_name": "Hero MotoCorp Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE415G01027",
+    "company_name": "Rail Vikas Nigam Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE040H01021",
+    "company_name": "SUZLON ENERGY LTD.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE094A01015",
+    "company_name": "Hindustan Petroleum Corporation Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE417T01026",
+    "company_name": "PB Fintech Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE257A01026",
+    "company_name": "Bharat Heavy Electricals Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE881D01027",
+    "company_name": "Oracle Financial Services Software Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE343G01021",
+    "company_name": "Bharti Hexacom Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE562A01011",
+    "company_name": "Indian Bank",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE377N01017",
+    "company_name": "Waaree Energies Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE813H01021",
+    "company_name": "TORRENT POWER LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE481Y01014",
+    "company_name": "General Insurance Corporation of India",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE399L01023",
+    "company_name": "ADANI TOTAL GAS LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE259A01022",
+    "company_name": "Colgate-Palmolive (India) Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE281B01032",
+    "company_name": "Lloyds Metals and Energy Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE406A01037",
+    "company_name": "Aurobindo Pharma Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE274J01014",
+    "company_name": "Oil India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE095A01012",
+    "company_name": "IndusInd Bank Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE484J01027",
+    "company_name": "Godrej Properties Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE619A01035",
+    "company_name": "Patanjali Foods Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE208A01029",
+    "company_name": "Ashok Leyland Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE669E01016",
+    "company_name": "VODAFONE IDEA LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE358A01014",
+    "company_name": "Abbott India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE093I01010",
+    "company_name": "OBEROI REALTY LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE07Y701011",
+    "company_name": "HITACHI ENERGY INDIA LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE169A01031",
+    "company_name": "Coromandel International Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE463A01038",
+    "company_name": "Berger Paints India Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE880J01026",
+    "company_name": "JSW Infrastructure Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE335Y01020",
+    "company_name": "Indian Railway Catering & Tourism Corporation Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE540L01014",
+    "company_name": "Alkem Laboratories Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE811K01011",
+    "company_name": "Prestige Estates Projects Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE584A01023",
+    "company_name": "NMDC Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE528G01035",
+    "company_name": "Yes Bank Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE211B01039",
+    "company_name": "The Phoenix Mills Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE974X01010",
+    "company_name": "Tube Investments of India Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE465A01025",
+    "company_name": "Bharat Forge Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE405E01023",
+    "company_name": "UNO Minda Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE513A01022",
+    "company_name": "Schaeffler India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE473A01011",
+    "company_name": "Linde India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE591G01025",
+    "company_name": "COFORGE LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE603J01030",
+    "company_name": "PI Industries Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE303R01014",
+    "company_name": "Kalyan Jewellers India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE686F01025",
+    "company_name": "United Breweries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE188A01015",
+    "company_name": "Fertilizers and Chemicals Travancore Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE660A01013",
+    "company_name": "SUNDARAM FINANCE LTD",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE982J01020",
+    "company_name": "One 97 Communications Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE171Z01026",
+    "company_name": "Bharat Dynamics Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE883A01011",
+    "company_name": "M.R.F. Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE388Y01029",
+    "company_name": "FSN E-Commerce Ventures Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE01EA01019",
+    "company_name": "Vishal Mega Mart Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE220G01021",
+    "company_name": "Jindal Stainless Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE061F01013",
+    "company_name": "Fortis Healthcare Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE628A01036",
+    "company_name": "UPL Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE674K01013",
+    "company_name": "Aditya Birla Capital Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE787D01026",
+    "company_name": "Balkrishna Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE761H01022",
+    "company_name": "Page Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE084A01016",
+    "company_name": "Bank of India",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE010V01017",
+    "company_name": "L&T Technology Services Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE356A01018",
+    "company_name": "Mphasis Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE195A01028",
+    "company_name": "Supreme Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE114A01011",
+    "company_name": "Steel Authority of India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE171A01029",
+    "company_name": "Federal Bank Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE202E01016",
+    "company_name": "Indian Renewable Energy Development Agency Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE949L01017",
+    "company_name": "AU Small Finance Bank Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE092T01019",
+    "company_name": "IDFC FIRST BANK LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE093A01041",
+    "company_name": "Hexaware Technologies Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE347G01014",
+    "company_name": "PETRONET LNG LTD.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE159A01016",
+    "company_name": "GlaxoSmithkline Pharmaceuticals Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE0BS701011",
+    "company_name": "Premier Energies Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE151A01013",
+    "company_name": "Tata Communications Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE179A01014",
+    "company_name": "Procter & Gamble Hygiene & Health Care Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE200A01026",
+    "company_name": "GE Vernova T&D India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE226A01021",
+    "company_name": "Voltas Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE797F01020",
+    "company_name": "Jubilant Foodworks Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE702C01027",
+    "company_name": "APL Apollo Tubes Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE111A01025",
+    "company_name": "Container Corporation Of India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE338I01027",
+    "company_name": "Motilal Oswal Financial Services Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE031A01017",
+    "company_name": "Housing &Urban Development Corporation Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE691A01018",
+    "company_name": "UCO Bank",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE180A01020",
+    "company_name": "Max Financial Services Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE704P01025",
+    "company_name": "Cochin Shipyard Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE376G01013",
+    "company_name": "Biocon Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE935A01035",
+    "company_name": "Glenmark Pharmaceuticals ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE09N301011",
+    "company_name": "Gujarat Fluorochemicals Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE152A01029",
+    "company_name": "Thermax Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE298J01013",
+    "company_name": "NIPPON LIFE INDIA ASSET MANAGEMENT LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE466L01038",
+    "company_name": "360 ONE WAM LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE498L01015",
+    "company_name": "L&T Finance Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE379A01028",
+    "company_name": "ITC Hotels Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE823G01014",
+    "company_name": "J.K. CEMENT LTD",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE457A01014",
+    "company_name": "Bank of maharashtra",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE472A01039",
+    "company_name": "Blue Star Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE006I01046",
+    "company_name": "ASTRAL LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE483A01010",
+    "company_name": "Central Bank of India",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE002L01015",
+    "company_name": "SJVN LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE670A01012",
+    "company_name": "Tata Elxsi Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE233A01035",
+    "company_name": "Godrej Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE007A01025",
+    "company_name": "CRISIL Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE042A01014",
+    "company_name": "Escorts Kubota Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE571A01038",
+    "company_name": "Ipca Laboratories Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE012A01025",
+    "company_name": "ACC Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE04I401011",
+    "company_name": "KPIT Technologies Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE00R701025",
+    "company_name": "DALMIA BHARAT LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE260B01028",
+    "company_name": "Godfrey Phillips India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE699H01024",
+    "company_name": "AWL AGRI BUSINESS LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE774D01024",
+    "company_name": "Mahindra & Mahindra Financial Services Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE918Z01012",
+    "company_name": "KAYNES TECHNOLOGY INDIA LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE930H01031",
+    "company_name": "K.P.R. Mill Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE139A01034",
+    "company_name": "National Aluminium Co. Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE878B01027",
+    "company_name": "KEI Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE031B01049",
+    "company_name": "Ajanta Pharma Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE410P01011",
+    "company_name": "Narayana Hrudayalaya Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE671A01010",
+    "company_name": "Honeywell Automation India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE470A01017",
+    "company_name": "3M India Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE947Q01028",
+    "company_name": "Laurus Labs Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE149A01033",
+    "company_name": "CHOLAMANDALAM FINANCIAL HOLDINGS LIMITED",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE206F01022",
+    "company_name": "Authum Investment & Infrastructure Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE589A01014",
+    "company_name": "NLC India Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE302A01020",
+    "company_name": "Exide Industries Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE944F01028",
+    "company_name": "Radico Khaitan Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE115A01026",
+    "company_name": "Lic Housing Finance Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE672A01018",
+    "company_name": "Tata Investment Corporation Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE073K01018",
+    "company_name": "Sona BLW Precision Forgings Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE317I01021",
+    "company_name": "Metro Brands Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE474Q01031",
+    "company_name": "Global Health Limited",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE212H01026",
+    "company_name": "AIA Engineering Ltd.",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE745G01035",
+    "company_name": "Multi Commodity Exchange of India Ltd",
+    "cap_category": "mid_cap"
+  },
+  {
+    "isin": "INE844O01030",
+    "company_name": "Gujarat Gas Limited",
+    "cap_category": "mid_cap"
+  }
+]

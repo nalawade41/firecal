@@ -1,8 +1,12 @@
 import { BrowserRouter } from "react-router"
 import { AppShell } from "@/components/layout/AppShell"
 import { AppRoutes } from "@/routes"
+import { fetchSchemeList } from "@/services/mf-api"
 
-function App() {
+// Warm the MF scheme cache on app load — silent, non-blocking
+fetchSchemeList().catch(() => {})
+
+export function App() {
   return (
     <BrowserRouter>
       <AppShell>
@@ -11,5 +15,3 @@ function App() {
     </BrowserRouter>
   )
 }
-
-export default App

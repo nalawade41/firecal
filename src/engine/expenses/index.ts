@@ -1,0 +1,6 @@
+export { computeEducationForYear } from "./education"
+export { computeMarriageForYear } from "./marriage"
+export { computeWhitegoodsForYear } from "./whitegoods"
+export { computeTravelForYear } from "./travel"
+export { computeHealthcareForYear } from "./healthcare"
+export { computeLivingExpenseForYear } from "./living-expense"

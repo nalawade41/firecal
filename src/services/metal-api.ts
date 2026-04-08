@@ -1,44 +1,13 @@
 /**
  * Gold & Silver Price API Service
  * Fetches current prices per gram in INR from gold-api.com
- * Caches results in localStorage with daily expiry
+ * Caches results via storage abstraction with daily expiry
  */
-
-const GOLD_CACHE_KEY = "metal_gold_inr"
-const SILVER_CACHE_KEY = "metal_silver_inr"
-
-interface CachedPrice {
-  pricePerGram: number
-  date: string // YYYY-MM-DD
-}
+import { readCache, writeCache, METAL_GOLD_KEY, METAL_SILVER_KEY, CACHE_TTL_24H } from "@/store"
 
 export interface MetalPrices {
   goldPerGram: number
   silverPerGram: number
-}
-
-function getCurrentDate(): string {
-  return new Date().toISOString().split("T")[0]
-}
-
-function isCacheValid(cacheDate: string): boolean {
-  return cacheDate === getCurrentDate()
-}
-
-function readCache(key: string): number | null {
-  const raw = localStorage.getItem(key)
-  if (!raw) return null
-  try {
-    const parsed: CachedPrice = JSON.parse(raw)
-    return isCacheValid(parsed.date) ? parsed.pricePerGram : null
-  } catch {
-    return null
-  }
-}
-
-function writeCache(key: string, pricePerGram: number): void {
-  const data: CachedPrice = { pricePerGram, date: getCurrentDate() }
-  localStorage.setItem(key, JSON.stringify(data))
 }
 
 /**
@@ -46,7 +15,7 @@ function writeCache(key: string, pricePerGram: number): void {
  * API returns price per troy ounce; 1 troy oz = 31.1035 grams.
  */
 async function fetchPricePerGram(url: string, cacheKey: string): Promise<number> {
-  const cached = readCache(cacheKey)
+  const cached = readCache<number>(cacheKey, CACHE_TTL_24H)
   if (cached !== null) return cached
 
   const response = await fetch(url)
@@ -65,23 +34,14 @@ async function fetchPricePerGram(url: string, cacheKey: string): Promise<number>
   return pricePerGram
 }
 
-/**
- * Fetch gold price per gram in INR
- */
 export async function fetchGoldPrice(): Promise<number> {
-  return fetchPricePerGram("https://api.gold-api.com/price/XAU/INR", GOLD_CACHE_KEY)
+  return fetchPricePerGram("https://api.gold-api.com/price/XAU/INR", METAL_GOLD_KEY)
 }
 
-/**
- * Fetch silver price per gram in INR
- */
 export async function fetchSilverPrice(): Promise<number> {
-  return fetchPricePerGram("https://api.gold-api.com/price/XAG/INR", SILVER_CACHE_KEY)
+  return fetchPricePerGram("https://api.gold-api.com/price/XAG/INR", METAL_SILVER_KEY)
 }
 
-/**
- * Fetch both gold and silver prices. Returns partial results on individual failures.
- */
 export async function fetchMetalPrices(): Promise<MetalPrices> {
   const [gold, silver] = await Promise.all([
     fetchGoldPrice().catch(() => 0),
@@ -90,9 +50,6 @@ export async function fetchMetalPrices(): Promise<MetalPrices> {
   return { goldPerGram: gold, silverPerGram: silver }
 }
 
-/**
- * Fire-and-forget prefetch for both metal prices
- */
 export function prefetchMetalPrices(): void {
   fetchMetalPrices().catch(() => { /* silent */ })
 }

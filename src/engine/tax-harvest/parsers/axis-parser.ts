@@ -5,11 +5,13 @@
  */
 
 import type { Transaction } from "@/types/tax-harvest"
-import * as pdfjsLib from "pdfjs-dist"
-import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url"
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl
+async function loadPdfJs() {
+  const pdfjsLib = await import("pdfjs-dist")
+  const pdfWorkerUrl = (await import("pdfjs-dist/build/pdf.worker.min.mjs?url")).default
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl
+  return pdfjsLib
+}
 
 /**
  * Parse Axis AMC file - handles both CSV and PDF formats
@@ -101,6 +103,7 @@ async function parseAxisPDF(file: File): Promise<Transaction[]> {
  * Extract lines from PDF with position-based grouping
  */
 async function extractLinesFromPDF(file: File): Promise<PDFPage[]> {
+  const pdfjsLib = await loadPdfJs()
   const arrayBuffer = await file.arrayBuffer()
 
   const pdf = await pdfjsLib.getDocument({

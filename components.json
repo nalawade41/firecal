@@ -5,17 +5,16 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/index.css",
+    "css": "src/themes/wealthtrack.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
     "components": "src/components",
-    "utils": "@/lib/utils",
+    "utils": "@/utils",
     "ui": "src/components/ui",
-    "lib": "src/lib",
-    "hooks": "src/hooks"
+    "lib": "src/utils"
   },
   "iconLibrary": "lucide"
 }
