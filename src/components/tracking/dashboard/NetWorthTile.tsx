@@ -39,11 +39,11 @@ export function NetWorthTile({ nw, onRefresh, isRefreshing }: NetWorthTileProps)
         )}
       </div>
 
-      <div className="border-t border-white/10 mt-4 pt-4 grid grid-cols-4 gap-2">
+      <div className="border-t border-white/10 mt-4 pt-4 grid grid-cols-4 gap-6">
         {nw.breakdown.map((item) => (
           <div key={item.label}>
-            <p className="text-[11px] text-white/40">{item.label}</p>
-            <p className="text-[13px] font-medium text-white/90 mt-0.5 font-['DM_Mono',monospace]">{item.value}</p>
+            <p className="wt-label-light">{item.label}</p>
+            <p className="text-[13px] font-medium text-white/90 mt-1 font-['DM_Mono',monospace]">{item.value}</p>
           </div>
         ))}
       </div>

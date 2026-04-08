@@ -57,19 +57,28 @@ export function useDashboard(data: OnboardingData): UseDashboardReturn {
   const [allocationResult, setAllocationResult] = useState<PortfolioAllocationResult | null>(null)
   const [isAllocLoading, setIsAllocLoading] = useState(true)
 
+  // Auto-refresh NAVs + metal prices on mount so dashboard shows live values
   useEffect(() => {
     let cancelled = false
-    setIsAllocLoading(true)
-    computePortfolioAllocation(data)
-      .then(result => {
-        if (!cancelled) {
-          setAllocationResult(result)
-          setIsAllocLoading(false)
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setIsAllocLoading(false)
-      })
+
+    async function init() {
+      setIsRefreshing(true)
+      setIsAllocLoading(true)
+
+      const [{ calculation }, allocResult] = await Promise.all([
+        refreshNetWorthData(data),
+        computePortfolioAllocation(data).catch(() => null),
+      ])
+
+      if (!cancelled) {
+        setNwCalc(calculation)
+        if (allocResult) setAllocationResult(allocResult)
+        setIsRefreshing(false)
+        setIsAllocLoading(false)
+      }
+    }
+
+    init()
     return () => { cancelled = true }
   }, [data])
 

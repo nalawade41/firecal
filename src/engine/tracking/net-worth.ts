@@ -74,19 +74,22 @@ function calculatePreciousMetalsValue(assets: OtherAssets): {
   let gold = 0
   let silver = 0
 
-  if (assets.goldGrams > 0) {
+  const goldGrams = assets?.goldGrams ?? 0
+  const silverGrams = assets?.silverGrams ?? 0
+
+  if (goldGrams > 0) {
     if (goldPrice === null) {
       missing.push("Gold price not cached")
     } else {
-      gold = assets.goldGrams * goldPrice
+      gold = goldGrams * goldPrice
     }
   }
 
-  if (assets.silverGrams > 0) {
+  if (silverGrams > 0) {
     if (silverPrice === null) {
       missing.push("Silver price not cached")
     } else {
-      silver = assets.silverGrams * silverPrice
+      silver = silverGrams * silverPrice
     }
   }
 
@@ -94,11 +97,12 @@ function calculatePreciousMetalsValue(assets: OtherAssets): {
 }
 
 export function calculateNetWorth(data: OnboardingData): NetWorthCalculation {
-  const mf = calculateMFValue(data.lumpsumInvestments, data.sipInvestments)
-  const metals = calculatePreciousMetalsValue(data.otherAssets)
+  const mf = calculateMFValue(data.lumpsumInvestments ?? [], data.sipInvestments ?? [])
+  const assets = data.otherAssets ?? {} as OtherAssets
+  const metals = calculatePreciousMetalsValue(assets)
 
-  const epfNps = data.otherAssets.epf.currentBalance + data.otherAssets.nps.currentBalance
-  const liquid = data.otherAssets.emergencyFund + data.otherAssets.otherSavings
+  const epfNps = (assets.epf?.currentBalance ?? 0) + (assets.nps?.currentBalance ?? 0)
+  const liquid = (assets.emergencyFund ?? 0) + (assets.otherSavings ?? 0)
 
   const total = mf.total + epfNps + metals.total + liquid
 

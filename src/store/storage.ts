@@ -63,8 +63,8 @@ interface CacheEntry<T> {
 
 export function readCache<T>(key: string, maxAgeMs: number): T | null {
   const entry = readJSON<CacheEntry<T>>(key)
-  if (!entry) return null
-  if (Date.now() - entry.ts > maxAgeMs) return null
+  if (!entry || entry.data === undefined) return null
+  if (typeof entry.ts === "number" && Date.now() - entry.ts > maxAgeMs) return null
   return entry.data
 }
 
