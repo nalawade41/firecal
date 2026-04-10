@@ -31,3 +31,8 @@ Thumbs.db
 
 # Logs
 *.log
+.superpowers
+docs
+.impeccable.md
+CLAUDE.md
+.claude

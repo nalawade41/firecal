@@ -428,3 +428,37 @@ Maintain this order in every file, separated by blank lines:
 - Do not add error handling or validation for scenarios that can't happen
 - Do not create abstractions for one-time operations
 - Do not introduce new dependencies without explicit approval
+
+---
+
+## 9. Design Context
+
+### Users
+WealthTrack serves two overlapping audiences in the Indian market:
+
+1. **DIY retail investors** (25-40): Young to mid-career professionals managing their own mutual fund portfolios, planning for FIRE, and optimizing taxes. They want clarity without hand-holding.
+2. **Serious wealth planners / HNIs** (35-55): Users with complex multi-goal portfolios (education, marriage, retirement), significant assets, and active tax harvesting needs. They expect density and precision.
+
+The interface must provide a clean entry point that doesn't overwhelm newcomers while offering the depth and information density that power users demand. Progressive disclosure is key — simple surfaces that reveal sophistication through interaction.
+
+**Context of use**: Desktop-primary, used during focused financial planning sessions (evenings, weekends). Users are making consequential decisions about their money and need to feel confident in what they see.
+
+### Brand Personality
+**Smart. Ambitious. Modern.**
+
+Like a fintech disruptor — forward-thinking, data-rich, and empowering. The interface should make users feel capable and in control. Think Wealthfront/Betterment's clean confidence crossed with the nature-grounded calm already established in the design system.
+
+**Emotional goals**: Confidence through clarity, empowerment through data visibility, satisfaction through precision.
+
+### Aesthetic Direction
+- **Visual tone**: Clean fintech with an organic twist — the forest/mint/sage palette differentiates against the typical blue/purple fintech sea
+- **Reference**: Wealthfront, Betterment — modern dashboards that are data-forward yet visually trustworthy
+- **Anti-reference**: Avoid Bloomberg-style density without hierarchy. Avoid generic "startup SaaS" aesthetics (purple gradients, floating 3D blobs, neon on dark). Avoid anything that feels like a bank from 2010
+- **Theme**: Dark backgrounds (forest-toned) with light glass cards. Dual-mode (dark onboarding, light-on-dark dashboard) is intentional
+
+### Design Principles
+1. **Clarity over cleverness** — Every visual choice must serve comprehension
+2. **Progressive depth** — Simple at first glance, powerful on closer inspection
+3. **Precision as personality** — Monospace numbers, exact percentages, specific dates communicate competence
+4. **Nature-grounded confidence** — Forest/green palette signals organic growth, stability, and long-term thinking
+5. **Respect the user's intelligence** — No dumbed-down tooltips for obvious things, trust users with their financial data
